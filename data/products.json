@@ -1,0 +1,136 @@
+{
+  "products": [
+    {
+      "id": "cellsentials",
+      "name": "USANA CellSentials",
+      "description": "Premium, daily multivitamin and multimineral system featuring USANA's patented InCelligence Complex†*",
+      "price": 1100.00,
+      "image": "https://placehold.co/600x400/e2e8f0/1e293b?text=CellSentials",
+      "bodyBenefits": [
+        "Total Body Health",
+        "Bone and Joint Health",
+        "Skin Health"
+      ],
+      "category": "Nutritionals",
+      "featured": true,
+      "bestSeller": true
+    },
+    {
+      "id": "proglucamune",
+      "name": "Proglucamune",
+      "description": "Advanced immune system support",
+      "price": 39.99,
+      "image": "https://placehold.co/600x400/e2e8f0/1e293b?text=Proglucamune",
+      "bodyBenefits": ["Immune Health"],
+      "category": "Nutritionals",
+      "featured": true,
+      "bestSeller": false
+    },
+    {
+      "id": "proflavanol",
+      "name": "Proflavanol C100",
+      "description": "Grape seed extract and vitamin C",
+      "price": 49.99,
+      "image": "https://placehold.co/600x400/e2e8f0/1e293b?text=Proflavanol",
+      "bodyBenefits": ["Heart Health", "Skin Health"],
+      "category": "Nutritionals",
+      "featured": true,
+      "bestSeller": true
+    },
+    {
+      "id": "nutrimeal",
+      "name": "Nutrimeal",
+      "description": "Low-glycemic meal replacement shake",
+      "price": 32.99,
+      "image": "https://placehold.co/600x400/e2e8f0/1e293b?text=Nutrimeal",
+      "bodyBenefits": ["Healthy Weight"],
+      "category": "Protein, shakes, bar",
+      "featured": false,
+      "bestSeller": true
+    },
+    {
+      "id": "celavive",
+      "name": "Celavive Pack",
+      "description": "Complete skincare regimen",
+      "price": 129.99,
+      "image": "https://placehold.co/600x400/e2e8f0/1e293b?text=Celavive",
+      "bodyBenefits": ["Skin Health"],
+      "category": "skin care",
+      "featured": true,
+      "bestSeller": false
+    }
+  ],
+  "featuredProducts": [
+    {
+      "id": "cellsentials",
+      "name": "USANA CellSentials™",
+      "price": 1100.00,
+      "image": "https://placehold.co/600x400/e2e8f0/1e293b?text=CellSentials",
+      "description": "Premium, daily multivitamin and multimineral system featuring USANA's patented InCelligence Complex†*",
+      "tag": "Best Seller"
+    },
+    {
+      "id": "proflavanol",
+      "name": "Proflavanol® C100",
+      "price": 49.99,
+      "image": "https://placehold.co/600x400/e2e8f0/1e293b?text=Proflavanol",
+      "description": "Powerful antioxidant complex combining grape seed extract and vitamin C.",
+      "tag": "Popular"
+    },
+    {
+      "id": "biomega",
+      "name": "BiOmega™",
+      "price": 39.99,
+      "image": "https://placehold.co/600x400/e2e8f0/1e293b?text=BiOmega",
+      "description": "Ultra-pure fish oil supplement rich in EPA and DHA omega-3 fatty acids.",
+      "tag": "Essential"
+    }
+  ],
+  "productInformation": {
+    "cellsentials": {
+      "usanaDifference": "USANA CellSentials™ Pack features a unique InCelligence Technology® that supports your cells' natural ability to protect and renew themselves. This innovative formula goes beyond regular supplements by targeting cellular health at the molecular level.",
+      "healthBenefits": [
+        "Provides optimal nourishment for cellular health",
+        "Supports healthy cell division and DNA integrity",
+        "Promotes natural cellular repair and renewal processes",
+        "Offers comprehensive antioxidant protection"
+      ]
+    },
+    "proglucamune": {
+      "usanaDifference": "ProGlucamune™ combines baker's yeast beta glucans and zinc into one powerful immune-supporting supplement. This unique formula helps prime your natural immune response for better health all year round.",
+      "healthBenefits": [
+        "Supports year-round immune system function",
+        "Promotes natural immune cell activity",
+        "Provides zinc and antioxidant support",
+        "Helps maintain immune strength during seasonal changes"
+      ]
+    },
+    "proflavanol": {
+      "usanaDifference": "Proflavanol® C100 combines grape-seed extract with high-potency vitamin C for advanced antioxidant protection. This powerful duo supports multiple aspects of health while promoting radiant, healthy-looking skin.",
+      "healthBenefits": [
+        "Provides powerful antioxidant protection",
+        "Supports cardiovascular and circulatory health",
+        "Promotes healthy, radiant skin",
+        "Maintains immune system strength"
+      ]
+    },
+    "nutrimeal": {
+      "usanaDifference": "USANA Nutrimeal™ is a nutritious meal replacement shake that's low glycemic and protein-rich. Each serving provides a balanced ratio of macronutrients to help you maintain healthy weight and energy levels.",
+      "healthBenefits": [
+        "Supports healthy weight management",
+        "Provides balanced nutrition with protein, fiber, and healthy fats",
+        "Helps maintain steady energy levels",
+        "Promotes feeling of fullness and satisfaction"
+      ]
+    },
+    "celavive": {
+      "usanaDifference": "Celavive® skincare combines USANA InCelligence Technology® with powerful peptides and botanicals. This comprehensive system is designed to address individual skin needs while supporting your skin's natural beauty-preserving functions.",
+      "healthBenefits": [
+        "Supports natural skin renewal processes",
+        "Helps maintain skin hydration and elasticity",
+        "Promotes youthful, radiant complexion",
+        "Provides targeted solutions for various skin concerns"
+      ]
+    }
+  }
+} 

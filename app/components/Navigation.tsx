@@ -44,7 +44,7 @@ export default function Navigation() {
       >
         <nav className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <Link href="/" className="text-2xl font-bold text-green-600 z-50" onClick={closeMenu}>
+            <Link href="/" className="text-2xl font-bold text-primary-500 z-50" onClick={closeMenu}>
               USANA
             </Link>
 
@@ -56,8 +56,8 @@ export default function Navigation() {
                   href={item.href}
                   className={`text-lg transition-colors duration-200 ${
                     pathname === item.href
-                      ? 'text-green-600 font-semibold'
-                      : 'text-gray-700 hover:text-green-600'
+                      ? 'text-primary-500 font-semibold'
+                      : 'text-gray-700 hover:text-primary-500'
                   }`}
                 >
                   {item.label}
@@ -65,14 +65,14 @@ export default function Navigation() {
               ))}
               <Link
                 href="/cart"
-                className="relative text-gray-700 hover:text-green-600 transition-colors duration-200"
+                className="relative text-gray-700 hover:text-primary-500 transition-colors duration-200"
               >
                 <span className="sr-only">Cart</span>
                 <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors duration-200">
                   🛒
                 </div>
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-primary-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {itemCount}
                   </span>
                 )}
@@ -91,7 +91,7 @@ export default function Navigation() {
                   🛒
                 </div>
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-primary-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {itemCount}
                   </span>
                 )}
@@ -144,7 +144,7 @@ export default function Navigation() {
                   href={item.href}
                   className={`text-2xl ${
                     pathname === item.href
-                      ? 'text-green-600 font-semibold'
+                      ? 'text-primary-500 font-semibold'
                       : 'text-gray-700'
                   }`}
                   onClick={closeMenu}

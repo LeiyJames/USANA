@@ -167,7 +167,7 @@ export default function TestimonialsPage() {
                       <div>
                         <p className="font-bold text-gray-900">{testimonials[activeIndex].name}</p>
                         <p className="text-gray-600">{testimonials[activeIndex].role}</p>
-                        <p className="text-green-600 mt-2">Product: {testimonials[activeIndex].product}</p>
+                        <p className="text-primary-500 mt-2">Product: {testimonials[activeIndex].product}</p>
                       </div>
                     </div>
                   </div>
@@ -177,13 +177,13 @@ export default function TestimonialsPage() {
                 <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between pointer-events-none">
                   <button
                     onClick={prevTestimonial}
-                    className="pointer-events-auto -translate-x-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-600 hover:text-green-600 transition-colors"
+                    className="pointer-events-auto -translate-x-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-600 hover:text-primary-500 transition-colors"
                   >
                     ←
                   </button>
                   <button
                     onClick={nextTestimonial}
-                    className="pointer-events-auto translate-x-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-600 hover:text-green-600 transition-colors"
+                    className="pointer-events-auto translate-x-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-600 hover:text-primary-500 transition-colors"
                   >
                     →
                   </button>
@@ -220,7 +220,7 @@ export default function TestimonialsPage() {
                       <div>
                         <p className="font-bold text-gray-900">{testimonial.name}</p>
                         <p className="text-gray-600 text-sm">{testimonial.role}</p>
-                        <p className="text-green-600 text-sm mt-2">
+                        <p className="text-primary-500 text-sm mt-2">
                           Product: {testimonial.product}
                         </p>
                       </div>
@@ -263,7 +263,7 @@ export default function TestimonialsPage() {
                       </h3>
                       <span className="ml-6 flex-shrink-0">
                         {openFaqId === faq.id ? (
-                          <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg className="h-6 w-6 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
                           </svg>
                         ) : (
@@ -287,23 +287,25 @@ export default function TestimonialsPage() {
       </ScrollReveal>
 
       {/* CTA Section */}
-      <section className="section bg-green-600 text-white">
-        <div className="container text-center">
-          <h2 className="heading-2 mb-6">Experience the Difference</h2>
-          <p className="text-xl text-green-100 mb-8 max-w-3xl mx-auto">
-            Join thousands of satisfied customers who have transformed their health with 
-            USANA's premium supplements. Start your journey today.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/products" className="btn-primary bg-white text-green-600 hover:bg-gray-100">
-              Shop Now
-            </Link>
-            <Link href="/contact" className="btn-outline border-white text-white hover:bg-white hover:text-green-600">
-              Contact Us
-            </Link>
+      <ScrollReveal direction="up">
+        <section className="section bg-primary-500 text-white">
+          <div className="container text-center">
+            <h2 className="heading-2 mb-6">Experience the Difference</h2>
+            <p className="text-xl text-primary-50 mb-8 max-w-3xl mx-auto">
+              Join thousands of satisfied customers who have transformed their health with 
+              USANA's premium supplements. Start your journey today.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/products" className="btn-primary bg-white text-primary-500 hover:bg-gray-100">
+                Shop Now
+              </Link>
+              <Link href="/contact" className="btn-outline border-white text-white hover:bg-white hover:text-primary-500">
+                Contact Us
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
     </div>
   )
 } 

@@ -45,7 +45,7 @@ export default function TrustSignals() {
           {trustSignals.map((signal, index) => (
             <ScrollReveal key={signal.title} delay={index * 0.1}>
               <div className="text-center group">
-                <div className="w-16 h-16 mx-auto mb-6 text-3xl flex items-center justify-center bg-green-50 rounded-full group-hover:bg-green-100 transition-colors">
+                <div className="w-16 h-16 mx-auto mb-6 text-3xl flex items-center justify-center bg-primary-50 rounded-full group-hover:bg-primary-100 transition-colors">
                   {signal.icon}
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -60,7 +60,7 @@ export default function TrustSignals() {
         </div>
 
         <ScrollReveal>
-          <div className="mt-16 p-8 bg-green-50 rounded-2xl">
+          <div className="mt-16 p-8 bg-primary-100 rounded-2xl">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="flex items-center gap-6">
                 <div className="text-4xl">⭐</div>

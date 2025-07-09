@@ -26,7 +26,7 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-xl">U</span>
             </div>
             <span className="ml-2 text-xl font-bold text-gray-900">USANA</span>
@@ -40,8 +40,8 @@ export default function Navigation() {
                 href={link.href}
                 className={`text-sm font-medium transition-colors ${
                   isActive(link.href)
-                    ? 'text-green-600'
-                    : 'text-gray-700 hover:text-green-600'
+                    ? 'text-primary-500'
+                    : 'text-gray-700 hover:text-primary-500'
                 }`}
               >
                 {link.label}
@@ -49,14 +49,14 @@ export default function Navigation() {
             ))}
             <Link
               href="/cart"
-              className="relative text-gray-700 hover:text-green-600"
+              className="relative text-gray-700 hover:text-primary-500"
             >
               <span className="sr-only">Cart</span>
               <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
                 🛒
               </div>
               {itemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-primary-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {itemCount}
                 </span>
               )}
@@ -64,37 +64,25 @@ export default function Navigation() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-4">
-            <Link
-              href="/cart"
-              className="relative text-gray-700"
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden"
+          >
+            <span className="sr-only">Open menu</span>
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <span className="sr-only">Cart</span>
-              <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-                🛒
-              </div>
-              {itemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {itemCount}
-                </span>
-              )}
-            </Link>
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-700"
-            >
-              <span className="sr-only">Open menu</span>
-              {isMobileMenuOpen ? (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
-          </div>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
         </div>
 
         {/* Mobile Menu */}
@@ -107,8 +95,8 @@ export default function Navigation() {
                   href={link.href}
                   className={`text-base font-medium px-4 py-2 rounded-lg transition-colors ${
                     isActive(link.href)
-                      ? 'text-green-600 bg-green-50'
-                      : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                      ? 'text-primary-500 bg-primary-50'
+                      : 'text-gray-700 hover:text-primary-500 hover:bg-primary-50'
                   }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >

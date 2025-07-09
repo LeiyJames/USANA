@@ -38,9 +38,9 @@ export default function RootLayout({
                 <div>
                   <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
                   <ul className="space-y-2 text-sm">
-                    <li><a href="/products" className="text-gray-600 hover:text-green-600">Products</a></li>
-                    <li><a href="/about" className="text-gray-600 hover:text-green-600">About Us</a></li>
-                    <li><a href="/contact" className="text-gray-600 hover:text-green-600">Contact</a></li>
+                    <li><a href="/products" className="text-gray-600 hover:text-primary-500">Products</a></li>
+                    <li><a href="/about" className="text-gray-600 hover:text-primary-500">About Us</a></li>
+                    <li><a href="/contact" className="text-gray-600 hover:text-primary-500">Contact</a></li>
                   </ul>
                 </div>
                 <div>

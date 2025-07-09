@@ -5,7 +5,7 @@ import ScrollReveal from './ScrollReveal';
 
 export default function Hero() {
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
@@ -25,13 +25,13 @@ export default function Hero() {
               <div className="flex gap-4">
                 <Link
                   href="/products"
-                  className="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-all hover:scale-105"
+                  className="bg-primary-500 text-white px-8 py-3 rounded-lg hover:bg-primary-600 transition-all hover:scale-105"
                 >
                   Shop Now
                 </Link>
                 <Link
                   href="/about"
-                  className="border-2 border-green-600 text-green-600 px-8 py-3 rounded-lg hover:bg-green-50 transition-all hover:scale-105"
+                  className="border-2 border-primary-500 text-primary-500 px-8 py-3 rounded-lg hover:bg-primary-50 transition-all hover:scale-105"
                 >
                   Learn More
                 </Link>
@@ -52,12 +52,10 @@ export default function Hero() {
       </div>
 
       {/* Decorative Elements */}
-      <div
-        className="absolute top-20 right-20 w-64 h-64 bg-green-600 rounded-full blur-3xl"
-      />
-      <div
-        className="absolute bottom-20 left-20 w-64 h-64 bg-green-600 rounded-full blur-3xl"
-      />
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 right-20 w-64 h-64 bg-primary-500 rounded-full blur-3xl opacity-20"></div>
+        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-primary-500 rounded-full blur-3xl opacity-20"></div>
+      </div>
     </div>
   );
 } 

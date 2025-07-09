@@ -64,7 +64,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-green-50 to-green-100">
+      <section className="py-20 bg-gradient-to-br from-primary-50 to-primary-100">
         <div className="container mx-auto px-4">
           <ScrollReveal>
             <h1 className="text-5xl font-bold text-center text-gray-900 mb-6">
@@ -80,7 +80,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-16">
+      <section className="py-20 bg-gradient-to-br from-primary-50 to-primary-100">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
@@ -91,7 +91,7 @@ export default function AboutPage() {
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-500">
                       <span className="text-xl">🎯</span>
                     </div>
                     <div>
@@ -100,7 +100,7 @@ export default function AboutPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-500">
                       <span className="text-xl">🔬</span>
                     </div>
                     <div>
@@ -109,7 +109,7 @@ export default function AboutPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-500">
                       <span className="text-xl">🌍</span>
                     </div>
                     <div>
@@ -141,28 +141,34 @@ export default function AboutPage() {
           <ScrollReveal>
             <h2 className="text-3xl font-bold text-center mb-12">Our Values</h2>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Excellence",
-                description: "Committed to the highest standards in everything we do"
-              },
-              {
-                title: "Innovation",
-                description: "Continuously advancing the science of nutrition"
-              },
-              {
-                title: "Integrity",
-                description: "Operating with transparency and ethical principles"
-              }
-            ].map((value, index) => (
-              <ScrollReveal key={value.title} direction="up" delay={index * 0.2}>
-                <div className="bg-white p-6 rounded-lg shadow-lg">
-                  <h3 className="text-xl font-semibold mb-4">{value.title}</h3>
-                  <p className="text-gray-600">{value.description}</p>
-                </div>
-              </ScrollReveal>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-500">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mt-4 mb-2">Quality Assurance</h3>
+              <p className="text-gray-600">Rigorous testing and quality control measures ensure the highest standards.</p>
+            </div>
+            <div>
+              <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-500">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mt-4 mb-2">Innovation</h3>
+              <p className="text-gray-600">Cutting-edge research and development for optimal nutritional solutions.</p>
+            </div>
+            <div>
+              <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-500">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mt-4 mb-2">Efficiency</h3>
+              <p className="text-gray-600">Fast processing and delivery to get you started on your health journey.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -217,7 +223,7 @@ export default function AboutPage() {
                   </div>
                   <div className="text-center">
                     <h3 className="text-xl font-semibold text-gray-900">{member.name}</h3>
-                    <p className="text-green-600 font-medium mb-2">{member.role}</p>
+                    <p className="text-primary-500 font-medium mb-2">{member.role}</p>
                     <p className="text-gray-600 text-sm">{member.description}</p>
                   </div>
                 </div>
@@ -239,7 +245,7 @@ export default function AboutPage() {
           </div>
           <div className="relative">
             {/* Timeline Line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-green-200" />
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-primary-200" />
             
             {/* Timeline Items */}
             <div className="space-y-16">
@@ -253,7 +259,7 @@ export default function AboutPage() {
                   {/* Content */}
                   <div className={`w-5/12 ${index % 2 === 0 ? 'text-right pr-8' : 'pl-8'}`}>
                     <div className="card">
-                      <span className="text-green-600 font-bold text-lg">
+                      <span className="text-primary-500 font-bold text-lg">
                         {milestone.year}
                       </span>
                       <h3 className="text-xl font-bold text-gray-900 mt-2 mb-3">
@@ -264,7 +270,7 @@ export default function AboutPage() {
                   </div>
                   
                   {/* Circle */}
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-green-600 rounded-full" />
+                  <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary-600 rounded-full" />
                 </div>
               ))}
             </div>
@@ -273,18 +279,18 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="section bg-green-600 text-white">
+      <section className="section bg-primary-500 text-white">
         <div className="container text-center">
           <h2 className="heading-2 mb-6">Join Our Mission</h2>
-          <p className="text-xl text-green-100 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-primary-50 mb-8 max-w-3xl mx-auto">
             Experience the difference of science-based nutrition and join thousands who have 
             transformed their health with USANA supplements.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/products" className="btn-primary bg-white text-green-600 hover:bg-gray-100">
+            <Link href="/products" className="btn-primary bg-white text-primary-500 hover:bg-gray-100">
               View Products
             </Link>
-            <Link href="/contact" className="btn-outline border-white text-white hover:bg-white hover:text-green-600">
+            <Link href="/contact" className="btn-outline border-white text-white hover:bg-white hover:text-primary-500">
               Contact Us
             </Link>
           </div>

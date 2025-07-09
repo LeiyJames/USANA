@@ -95,10 +95,12 @@ export default function ContactPage() {
               <div className="bg-white rounded-2xl shadow-lg p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Status Message */}
-                  {status.type && (
-                    <div className={`p-4 rounded-lg ${
-                      status.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-                    }`}>
+                  {status.message && (
+                    <div
+                      className={`p-4 rounded-lg mb-6 ${
+                        status.type === 'success' ? 'bg-primary-100 text-primary-700' : 'bg-red-50 text-red-800'
+                      }`}
+                    >
                       {status.message}
                     </div>
                   )}
@@ -115,7 +117,7 @@ export default function ContactPage() {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       placeholder="John Doe"
                     />
                   </div>
@@ -132,7 +134,7 @@ export default function ContactPage() {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       placeholder="john@example.com"
                     />
                   </div>
@@ -148,7 +150,7 @@ export default function ContactPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       placeholder="+1 (555) 000-0000"
                     />
                   </div>
@@ -165,7 +167,7 @@ export default function ContactPage() {
                       required
                       value={formData.subject}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       placeholder="Product Inquiry"
                     />
                   </div>
@@ -182,7 +184,7 @@ export default function ContactPage() {
                       value={formData.message}
                       onChange={handleChange}
                       rows={5}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       placeholder="Your message here..."
                     />
                   </div>
@@ -213,21 +215,21 @@ export default function ContactPage() {
             <div className="max-w-3xl mx-auto">
               <div className="grid md:grid-cols-3 gap-8 text-center">
                 <div>
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl">📞</span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Phone</h3>
                   <p className="text-gray-600">+1 (800) 123-4567</p>
                 </div>
                 <div>
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl">✉️</span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Email</h3>
                   <p className="text-gray-600">support@usana.com</p>
                 </div>
                 <div>
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl">🏢</span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Office</h3>
