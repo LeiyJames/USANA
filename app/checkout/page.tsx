@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { sendOrderConfirmation } from '@/utils/emailService'
 import { validateHoneypot } from '@/utils/orderSecurity'
 import { Toaster, toast } from 'react-hot-toast'
+import { useEffect, useState } from 'react'
 import type { CartItem } from '@/contexts/CartContext'
 
 type CheckoutFormData = {
@@ -24,11 +25,19 @@ type CheckoutFormData = {
 export default function CheckoutPage() {
   const router = useRouter()
   const { items, clearCart } = useCart()
+  const [isClient, setIsClient] = useState(false)
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<CheckoutFormData>()
+
+  useEffect(() => {
+    setIsClient(true)
+    if (items.length === 0) {
+      router.push('/cart')
+    }
+  }, [items.length, router])
 
   const subtotal = items.reduce((sum: number, item: CartItem) => sum + item.price * item.quantity, 0)
   const shipping = subtotal > 100 ? 0 : 9.99
@@ -106,9 +115,8 @@ export default function CheckoutPage() {
     }
   };
 
-  if (items.length === 0) {
-    router.push('/cart');
-    return null;
+  if (!isClient) {
+    return null; // Return null during server-side rendering
   }
 
   return (
@@ -253,8 +261,6 @@ export default function CheckoutPage() {
                           <p className="mt-1 text-sm text-red-600">{errors.state.message}</p>
                         )}
                       </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="zipCode" className="label">
                           ZIP/Postal Code
@@ -287,61 +293,69 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
+                {/* Order Summary */}
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                    Order Summary
+                  </h2>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span>Subtotal</span>
+                      <span>₱ {subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Shipping</span>
+                      <span>₱ {shipping.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Tax (8%)</span>
+                      <span>₱ {tax.toFixed(2)}</span>
+                    </div>
+                    <div className="border-t pt-2 mt-2">
+                      <div className="flex justify-between font-semibold">
+                        <span>Total</span>
+                        <span>₱ {total.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <button
                   type="submit"
+                  className="btn-primary w-full"
                   disabled={isSubmitting}
-                  className={`btn-primary w-full ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
                 >
-                  {isSubmitting ? 'Processing...' : `Complete Order - $${total.toFixed(2)}`}
+                  {isSubmitting ? 'Processing...' : 'Place Order'}
                 </button>
               </form>
             </div>
           </div>
 
-          {/* Order Summary */}
-          <div className="lg:col-span-1">
-            <div className="card sticky top-24">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                Order Summary
+          {/* Order Summary Card */}
+          <div>
+            <div className="card">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                Cart Items
               </h2>
-              
-              <div className="divide-y">
+              <div className="space-y-4">
                 {items.map((item) => (
-                  <div key={item.id} className="py-4 first:pt-0 last:pb-0">
-                    <div className="flex justify-between">
-                      <div>
-                        <p className="font-medium text-gray-900">{item.name}</p>
-                        <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                  <div key={item.id} className="flex gap-4">
+                    <div className="w-20 h-20 relative">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="object-cover rounded"
+                      />
+                      <div className="absolute -top-2 -right-2 bg-primary-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">
+                        {item.quantity}
                       </div>
-                      <p className="font-medium text-gray-900">
-                        ${(item.price * item.quantity).toFixed(2)}
-                      </p>
+                    </div>
+                    <div>
+                      <h3 className="font-medium">{item.name}</h3>
+                      <p className="text-gray-600">₱ {item.price.toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
-              </div>
-
-              <div className="border-t mt-6 pt-6 space-y-4">
-                <div className="flex justify-between text-gray-600">
-                  <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-gray-600">
-                  <span>Shipping</span>
-                  {shipping === 0 ? (
-                    <span className="text-green-600">Free</span>
-                  ) : (
-                    <span>${shipping.toFixed(2)}</span>
-                  )}
-                </div>
-                <div className="flex justify-between text-gray-600">
-                  <span>Tax (8%)</span>
-                  <span>${tax.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between font-semibold text-gray-900 pt-4 border-t">
-                  <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
-                </div>
               </div>
             </div>
           </div>
