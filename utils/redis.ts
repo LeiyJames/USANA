@@ -1,49 +1,47 @@
-import { Redis } from '@upstash/redis'
+// Simple in-memory rate limiting implementation
+const rateLimitStore = new Map<string, { count: number; timestamp: number }>();
 
-if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
-  throw new Error('Redis environment variables are not set')
-}
+const RATE_LIMIT = {
+  maxAttempts: 5, // Maximum attempts allowed
+  windowMs: 3600000, // Time window in milliseconds (1 hour)
+};
 
-// Create Redis client
-export const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-})
+export async function checkRateLimit(identifier: string) {
+  const now = Date.now();
+  const userLimit = rateLimitStore.get(identifier);
 
-// Rate limiting functions
-export async function checkRateLimit(identifier: string): Promise<{ allowed: boolean; message?: string }> {
-  const now = Date.now()
-  const key = `order_limit:${identifier}`
-  
-  // Get current attempts
-  const attempts = await redis.get<{ count: number; timestamp: number }>(key)
-  
-  if (!attempts) {
-    // First attempt
-    await redis.set(key, { count: 1, timestamp: now }, { ex: 3600 }) // Expire in 1 hour
-    return { allowed: true }
-  }
-
-  // Check if we're still within the time window
-  if (now - attempts.timestamp < 3600000) { // 1 hour in milliseconds
-    if (attempts.count >= 3) {
-      const remainingTime = Math.ceil((3600000 - (now - attempts.timestamp)) / 60000)
-      return {
-        allowed: false,
-        message: `Too many orders. Please try again in ${remainingTime} minutes.`
-      }
+  // Clean up old entries
+  Array.from(rateLimitStore.entries()).forEach(([key, value]) => {
+    if (now - value.timestamp > RATE_LIMIT.windowMs) {
+      rateLimitStore.delete(key);
     }
-    
-    // Increment attempt count
-    await redis.set(key, {
-      count: attempts.count + 1,
-      timestamp: attempts.timestamp
-    }, { ex: 3600 })
-    
-    return { allowed: true }
+  });
+
+  if (!userLimit) {
+    // First attempt
+    rateLimitStore.set(identifier, { count: 1, timestamp: now });
+    return { allowed: true };
   }
-  
-  // Reset if time window has passed
-  await redis.set(key, { count: 1, timestamp: now }, { ex: 3600 })
-  return { allowed: true }
+
+  if (now - userLimit.timestamp > RATE_LIMIT.windowMs) {
+    // Reset after window
+    rateLimitStore.set(identifier, { count: 1, timestamp: now });
+    return { allowed: true };
+  }
+
+  if (userLimit.count >= RATE_LIMIT.maxAttempts) {
+    const remainingTime = Math.ceil((RATE_LIMIT.windowMs - (now - userLimit.timestamp)) / 60000);
+    return {
+      allowed: false,
+      message: `Too many attempts. Please try again in ${remainingTime} minutes.`
+    };
+  }
+
+  // Increment attempt count
+  rateLimitStore.set(identifier, {
+    count: userLimit.count + 1,
+    timestamp: userLimit.timestamp
+  });
+
+  return { allowed: true };
 } 

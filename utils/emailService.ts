@@ -1,3 +1,5 @@
+'use client'
+
 import emailjs from '@emailjs/browser';
 import { emailjsConfig } from '@/config/emailjs';
 
@@ -90,24 +92,26 @@ export const sendOrderConfirmation = async (data: OrderConfirmationData): Promis
   try {
     validateConfig();
 
-    // Format items for the email template
+    // Calculate subtotal and format items for the email template
+    const subtotal = data.items.reduce((sum, item) => sum + (item.price * item.units), 0);
     const formattedItems = data.items.map(item => ({
       name: item.name,
-      price: item.price.toFixed(2),
+      unit_price: item.price.toLocaleString(),
       units: item.units,
+      line_total: (item.price * item.units).toLocaleString(),
       image_url: item.image
     }));
-
-    const total = data.items.reduce((sum, item) => sum + (item.price * item.units), 0) + data.shipping + data.tax;
 
     const templateParams = {
       email: data.email,
       order_id: data.orderId,
       orders: formattedItems,
       cost: {
-        shipping: data.shipping.toFixed(2),
-        tax: data.tax.toFixed(2),
-        total: total.toFixed(2)
+        subtotal: subtotal.toLocaleString(),
+        shipping: data.shipping.toLocaleString(),
+        tax: data.tax.toLocaleString(),
+        total: (subtotal + data.shipping + data.tax).toLocaleString(),
+        free_shipping: data.shipping === 0
       },
       customer_name: `${data.shippingAddress.firstName} ${data.shippingAddress.lastName}`,
       shipping_address: `${data.shippingAddress.address}, ${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddress.zipCode}, ${data.shippingAddress.country}`,

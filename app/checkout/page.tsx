@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { useCart } from '@/contexts/CartContext'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -40,8 +42,8 @@ export default function CheckoutPage() {
   }, [items.length, router])
 
   const subtotal = items.reduce((sum: number, item: CartItem) => sum + item.price * item.quantity, 0)
-  const shipping = subtotal > 100 ? 0 : 9.99
-  const tax = subtotal * 0.08 // 8% tax rate
+  const shipping = subtotal > 5000 ? 0 : 250 // Updated shipping threshold to ₱5000
+  const tax = subtotal * 0.12 // 12% VAT rate for Philippines
   const total = subtotal + shipping + tax
 
   const onSubmit = async (data: CheckoutFormData) => {
@@ -129,7 +131,7 @@ export default function CheckoutPage() {
           {/* Checkout Form */}
           <div className="lg:col-span-2">
             <div className="card">
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" id="checkout-form">
                 {/* Honeypot field - hidden from real users */}
                 <div className="hidden">
                   <input
@@ -255,7 +257,7 @@ export default function CheckoutPage() {
                           id="state"
                           type="text"
                           className={`input ${errors.state ? 'border-red-500' : ''}`}
-                          {...register('state', { required: 'State is required' })}
+                          {...register('state', { required: 'State/Province is required' })}
                         />
                         {errors.state && (
                           <p className="mt-1 text-sm text-red-600">{errors.state.message}</p>
@@ -269,7 +271,7 @@ export default function CheckoutPage() {
                           id="zipCode"
                           type="text"
                           className={`input ${errors.zipCode ? 'border-red-500' : ''}`}
-                          {...register('zipCode', { required: 'ZIP code is required' })}
+                          {...register('zipCode', { required: 'ZIP/Postal Code is required' })}
                         />
                         {errors.zipCode && (
                           <p className="mt-1 text-sm text-red-600">{errors.zipCode.message}</p>
@@ -293,69 +295,97 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                {/* Order Summary */}
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                    Order Summary
-                  </h2>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span>Subtotal</span>
-                      <span>₱ {subtotal.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Shipping</span>
-                      <span>₱ {shipping.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Tax (8%)</span>
-                      <span>₱ {tax.toFixed(2)}</span>
-                    </div>
-                    <div className="border-t pt-2 mt-2">
-                      <div className="flex justify-between font-semibold">
-                        <span>Total</span>
-                        <span>₱ {total.toFixed(2)}</span>
+                {/* Order Summary for Mobile */}
+                <div className="lg:hidden">
+                  <div className="border-t pt-6">
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                      Order Summary
+                    </h2>
+                    <div className="space-y-4 text-gray-600">
+                      <div className="flex justify-between">
+                        <span>Subtotal</span>
+                        <span>₱{subtotal.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Shipping</span>
+                        {shipping === 0 ? (
+                          <span className="text-primary-500">Free</span>
+                        ) : (
+                          <span>₱{shipping.toLocaleString()}</span>
+                        )}
+                      </div>
+                      <div className="flex justify-between">
+                        <span>VAT (12%)</span>
+                        <span>₱{tax.toLocaleString()}</span>
+                      </div>
+                      <div className="border-t pt-4">
+                        <div className="flex justify-between font-semibold text-gray-900">
+                          <span>Total</span>
+                          <span>₱{total.toLocaleString()}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <div className="mt-6">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="btn-primary w-full"
+                    >
+                      {isSubmitting ? 'Processing...' : 'Place Order'}
+                    </button>
+                  </div>
                 </div>
-
-                <button
-                  type="submit"
-                  className="btn-primary w-full"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Processing...' : 'Place Order'}
-                </button>
               </form>
             </div>
           </div>
 
-          {/* Order Summary Card */}
-          <div>
-            <div className="card">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                Cart Items
+          {/* Order Summary for Desktop */}
+          <div className="hidden lg:block">
+            <div className="card sticky top-24">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                Order Summary
               </h2>
-              <div className="space-y-4">
-                {items.map((item) => (
-                  <div key={item.id} className="flex gap-4">
-                    <div className="w-20 h-20 relative">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="object-cover rounded"
-                      />
-                      <div className="absolute -top-2 -right-2 bg-primary-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">
-                        {item.quantity}
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="font-medium">{item.name}</h3>
-                      <p className="text-gray-600">₱ {item.price.toFixed(2)}</p>
-                    </div>
+              
+              <div className="space-y-4 text-gray-600">
+                <div className="flex justify-between">
+                  <span>Subtotal</span>
+                  <span>₱{subtotal.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Shipping</span>
+                  {shipping === 0 ? (
+                    <span className="text-primary-500">Free</span>
+                  ) : (
+                    <span>₱{shipping.toLocaleString()}</span>
+                  )}
+                </div>
+                <div className="flex justify-between">
+                  <span>VAT (12%)</span>
+                  <span>₱{tax.toLocaleString()}</span>
+                </div>
+                <div className="border-t pt-4">
+                  <div className="flex justify-between font-semibold text-gray-900">
+                    <span>Total</span>
+                    <span>₱{total.toLocaleString()}</span>
                   </div>
-                ))}
+                  {shipping > 0 && (
+                    <p className="text-sm text-gray-500 mt-2">
+                      Add ₱{(5000 - subtotal).toLocaleString()} more to qualify for free shipping
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-8">
+                <button
+                  type="submit"
+                  form="checkout-form"
+                  disabled={isSubmitting}
+                  className="btn-primary w-full"
+                >
+                  {isSubmitting ? 'Processing...' : 'Place Order'}
+                </button>
               </div>
             </div>
           </div>

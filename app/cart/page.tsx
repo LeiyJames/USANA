@@ -11,7 +11,7 @@ export default function CartPage() {
   const [isClearing, setIsClearing] = useState(false)
 
   const subtotal = items.reduce((sum: number, item: CartItem) => sum + item.price * item.quantity, 0)
-  const shipping = subtotal > 100 ? 0 : 9.99
+  const shipping = subtotal > 5000 ? 0 : 250 // Updated shipping threshold for PHP
   const total = subtotal + shipping
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
@@ -72,8 +72,8 @@ export default function CartPage() {
                       <h3 className="text-lg font-semibold text-gray-900">
                         {item.name}
                       </h3>
-                      <p className="text-green-600 font-semibold">
-                        ${item.price.toFixed(2)}
+                      <p className="text-primary-500 font-semibold">
+                        ₱{item.price.toLocaleString()}
                       </p>
                     </div>
                     <div className="flex items-center gap-4">
@@ -129,24 +129,24 @@ export default function CartPage() {
               <div className="space-y-4 text-gray-600">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>₱{subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
                   {shipping === 0 ? (
-                    <span className="text-green-600">Free</span>
+                    <span className="text-primary-500">Free</span>
                   ) : (
-                    <span>${shipping.toFixed(2)}</span>
+                    <span>₱{shipping.toLocaleString()}</span>
                   )}
                 </div>
                 <div className="border-t pt-4">
                   <div className="flex justify-between font-semibold text-gray-900">
                     <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>₱{total.toLocaleString()}</span>
                   </div>
                   {shipping > 0 && (
                     <p className="text-sm text-gray-500 mt-2">
-                      Add ${(100 - subtotal).toFixed(2)} more to qualify for free shipping
+                      Add ₱{(5000 - subtotal).toLocaleString()} more to qualify for free shipping
                     </p>
                   )}
                 </div>
