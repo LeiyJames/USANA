@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, useScroll } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from '@/contexts/CartContext';
 
 export default function Navigation() {
@@ -13,6 +13,18 @@ export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { itemCount } = useCart();
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
 
   // Update scroll state
   scrollY.on("change", (latest) => {
@@ -124,28 +136,22 @@ export default function Navigation() {
         </nav>
 
         {/* Mobile Menu Overlay */}
-        <motion.div
-          className={`fixed inset-0 bg-white z-40 md:hidden ${
-            isMobileMenuOpen ? 'block' : 'hidden'
+        <div 
+          className={`fixed inset-0 bg-white/95 backdrop-blur-sm transition-transform duration-300 ease-in-out transform md:hidden ${
+            isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
-          initial="closed"
-          animate={isMobileMenuOpen ? "open" : "closed"}
-          variants={{
-            open: { opacity: 1, x: 0 },
-            closed: { opacity: 0, x: "100%" }
-          }}
-          transition={{ duration: 0.3 }}
+          style={{ top: '0', height: '100vh' }}
         >
           <div className="container mx-auto px-4 pt-24 pb-8">
-            <div className="flex flex-col space-y-6">
+            <div className="flex flex-col space-y-8">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-2xl ${
+                  className={`text-2xl transition-colors duration-200 ${
                     pathname === item.href
                       ? 'text-primary-500 font-semibold'
-                      : 'text-gray-700'
+                      : 'text-gray-700 hover:text-primary-500'
                   }`}
                   onClick={closeMenu}
                 >
@@ -154,13 +160,13 @@ export default function Navigation() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       </motion.header>
 
       {/* Overlay backdrop */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
           onClick={closeMenu}
         />
       )}

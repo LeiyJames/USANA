@@ -1,8 +1,8 @@
 'use client';
 
-import Image from 'next/image';
-import { useCart } from '@/contexts/CartContext';
 import ScrollReveal from './ScrollReveal';
+import ProductCarousel from './ProductCarousel';
+import { useCart } from '@/contexts/CartContext';
 import { getFeaturedProducts } from '@/lib/products';
 
 // Add price formatting helper
@@ -20,6 +20,15 @@ const featuredProducts = getFeaturedProducts();
 export default function FeaturedProducts() {
   const { addItem } = useCart();
 
+  const handleAddToCart = (product: any) => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image
+    });
+  };
+
   return (
     <section className="section bg-white">
       <div className="container">
@@ -36,52 +45,13 @@ export default function FeaturedProducts() {
           </ScrollReveal>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredProducts.map((product, index) => (
-            <ScrollReveal key={product.id} delay={0.2 * (index + 1)}>
-              <div className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow">
-                <div className="relative">
-                  <div className="relative h-64 w-full">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    {product.tag}
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {product.name}
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    {product.description}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-primary-500">
-                      {formatPrice(product.price)}
-                    </span>
-                    <button
-                      onClick={() => addItem({
-                        id: product.id,
-                        name: product.name,
-                        price: product.price,
-                        image: product.image
-                      })}
-                      className="btn-primary text-sm px-4 py-2"
-                    >
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
+        <ScrollReveal>
+          <ProductCarousel 
+            products={featuredProducts}
+            onAddToCart={handleAddToCart}
+            formatPrice={formatPrice}
+          />
+        </ScrollReveal>
       </div>
     </section>
   );

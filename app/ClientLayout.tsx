@@ -20,7 +20,7 @@ export default function ClientLayout({
   return (
     <CartProvider>
       <Navigation />
-      <main className="min-h-screen pt-20">
+      <main className="min-h-screen pt-16 md:pt-20">
         {children}
       </main>
       <footer className="bg-gray-100">
