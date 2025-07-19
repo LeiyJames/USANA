@@ -36,7 +36,7 @@ export default function Testimonials() {
 
         <ScrollReveal>
           <TestimonialsCarousel testimonials={testimonials} />
-        </ScrollReveal>
+            </ScrollReveal>
       </div>
     </section>
   );

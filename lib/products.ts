@@ -1,4 +1,4 @@
-import productsData from '../data/products.json';
+import { supabase } from './supabase';
 
 export interface Product {
   id: string;
@@ -6,60 +6,80 @@ export interface Product {
   description: string;
   price: number;
   image: string;
-  bodyBenefits: string[];
   category: string;
+  stock: number;
   featured: boolean;
-  bestSeller: boolean;
+  tag?: string;
+  body_benefits?: string[];
+  ingredients?: string[];
+  usage_instructions?: string;
+  key_features?: string[];
+  safety_info?: string;
+  best_seller?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface FeaturedProduct {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  description: string;
-  tag: string;
+export async function getProducts(): Promise<Product[]> {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching products:', error);
+    return [];
+  }
+
+  return data || [];
 }
 
-export interface ProductInfo {
-  usanaDifference: string;
-  healthBenefits: string[];
+export async function getProductById(id: string): Promise<Product | null> {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error('Error fetching product:', error);
+    return null;
+  }
+
+  return data;
 }
 
-export interface ProductData {
-  products: Product[];
-  featuredProducts: FeaturedProduct[];
-  productInformation: Record<string, ProductInfo>;
+export async function getProductsByCategory(category: string): Promise<Product[]> {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('category', category)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching products by category:', error);
+    return [];
+  }
+
+  return data || [];
 }
 
-const typedProductsData = productsData as ProductData;
+export function getCategories(): string[] {
+  return [
+    'Nutritionals',
+    'Protein, shakes, bar',
+    'Skin Care',
+    'Personal Care'
+  ];
+}
 
-export const getAllProducts = (): Product[] => {
-  return typedProductsData.products;
-};
-
-export const getFeaturedProducts = (): FeaturedProduct[] => {
-  return typedProductsData.featuredProducts;
-};
-
-export const getProductById = (id: string): Product | undefined => {
-  return typedProductsData.products.find(p => p.id === id);
-};
-
-export const getProductInfo = (id: string): ProductInfo | undefined => {
-  return typedProductsData.productInformation[id];
-};
-
-export const getRecommendedProducts = (currentProductId: string, category: string): Product[] => {
-  return typedProductsData.products
-    .filter(p => p.id !== currentProductId && p.category === category)
-    .slice(0, 3);
-};
-
-export const getCategories = (): string[] => {
-  return Array.from(new Set(typedProductsData.products.map(p => p.category)));
-};
-
-export const getBodyBenefits = (): string[] => {
-  return Array.from(new Set(typedProductsData.products.flatMap(p => p.bodyBenefits)));
-}; 
+export function getBodyBenefits(): string[] {
+  return [
+    'Total Body Health',
+    'Bone and Joint Health',
+    'Skin Health',
+    'Heart Health',
+    'Immune Health',
+    'Healthy Weight'
+  ];
+} 

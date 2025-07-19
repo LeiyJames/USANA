@@ -154,7 +154,7 @@ export default function AboutPage() {
           </ScrollReveal>
           <ScrollReveal>
             <TeamCarousel members={teamMembers} />
-          </ScrollReveal>
+              </ScrollReveal>
         </div>
       </section>
 

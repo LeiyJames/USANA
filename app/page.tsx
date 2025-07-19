@@ -5,7 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import ScrollReveal from './components/ScrollReveal'
 import FeaturedProducts from './components/FeaturedProducts'
-import BenefitsCarousel from './components/BenefitsCarousel'
 import { getFeaturedProducts } from '@/lib/products'
 import { motion } from 'framer-motion'
 
@@ -53,19 +52,11 @@ const trustIndicators = [
   }
 ]
 
-const featuredProduct = getFeaturedProducts()[0];
+// Default featured product image
+const defaultProductImage = '/images/default-product.jpg';
 
 export default function HomePage() {
   const { addItem } = useCart()
-
-  const handleAddToCart = () => {
-    addItem({
-      id: featuredProduct.id,
-      name: featuredProduct.name,
-      price: featuredProduct.price,
-      image: featuredProduct.image
-    })
-  }
 
   return (
     <>
@@ -107,7 +98,7 @@ export default function HomePage() {
                   transition={{ type: "spring", stiffness: 300 }}
                 >
                   <Image
-                    src={featuredProduct.image}
+                    src={defaultProductImage}
                     alt="USANA Supplements"
                     width={600}
                     height={600}
@@ -147,8 +138,23 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="mb-16">
-            <BenefitsCarousel benefits={benefits} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            {benefits.map((benefit, index) => (
+              <ScrollReveal key={benefit.id} delay={index * 0.1}>
+                <motion.div 
+                  className="text-center p-6 rounded-xl hover:bg-primary-50 transition-colors"
+                  whileHover={{ y: -5 }}
+                >
+                  <div className="text-5xl mb-4">{benefit.icon}</div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-gray-600">
+                    {benefit.description}
+                  </p>
+                </motion.div>
+              </ScrollReveal>
+            ))}
           </div>
 
           {/* Trust Indicators */}

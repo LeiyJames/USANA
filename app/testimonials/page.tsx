@@ -1,311 +1,125 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import ScrollReveal from '../components/ScrollReveal'
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { supabase } from '@/lib/supabase';
 
-const testimonials = [
-  {
-    id: 1,
-    name: 'Sarah Johnson',
-    role: 'Fitness Instructor',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
-    rating: 5,
-    content: 'USANA Cellsentials has been a game-changer for my energy levels and overall health. As a fitness instructor, I need to be at my best, and these supplements help me maintain peak performance.',
-    product: 'Cellsentials™'
-  },
-  {
-    id: 2,
-    name: 'Michael Chen',
-    role: 'Business Executive',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
-    rating: 5,
-    content: "The quality of USANA products is unmatched. I've tried many supplements, but none have made such a noticeable difference in my daily energy and focus as Proflavanol C100.",
-    product: 'Proflavanol® C100'
-  },
-  {
-    id: 3,
-    name: 'Emily Rodriguez',
-    role: 'Healthcare Professional',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop',
-    rating: 5,
-    content: "As a healthcare professional, I'm very particular about the supplements I take. USANA's commitment to quality and research-backed formulas is why I trust and recommend their products.",
-    product: 'BiOmega™'
-  },
-  {
-    id: 4,
-    name: 'David Thompson',
-    role: 'Athlete',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop',
-    rating: 5,
-    content: 'BiOmega has been essential for my joint health and recovery. The quality is exceptional, and I feel the difference in my training and performance.',
-    product: 'BiOmega™'
-  },
-  {
-    id: 5,
-    name: 'Lisa Martinez',
-    role: 'Wellness Coach',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop',
-    rating: 5,
-    content: 'I recommend USANA products to all my clients. The results speak for themselves - improved energy, better sleep, and overall wellness. The science behind these products is impressive.',
-    product: 'Cellsentials™'
-  }
-]
-
-const faqs = [
-  {
-    id: 'fda',
-    question: 'Are USANA supplements FDA approved?',
-    answer: 'While dietary supplements are not subject to FDA approval, USANA follows FDA guidelines and Good Manufacturing Practices (GMP). Our facility is NSF certified, ensuring the highest quality standards in supplement manufacturing.'
-  },
-  {
-    id: 'daily',
-    question: 'Can I take these supplements daily?',
-    answer: 'Yes, USANA supplements are designed for daily use. Our products are formulated to provide optimal nutrition when taken as directed. Always follow the recommended dosage on the product label.'
-  },
-  {
-    id: 'effects',
-    question: 'Are there any side effects?',
-    answer: 'USANA supplements are made with high-quality, pure ingredients and are generally well-tolerated. However, as with any supplement, some individuals may experience mild effects as their body adjusts. Consult your healthcare provider before starting any supplement regimen.'
-  },
-  {
-    id: 'quality',
-    question: 'How does USANA ensure product quality?',
-    answer: 'USANA maintains strict quality control measures throughout our manufacturing process. We test raw materials and finished products for purity and potency, and our facility follows pharmaceutical-grade GMP standards.'
-  },
-  {
-    id: 'results',
-    question: 'How long until I see results?',
-    answer: 'Individual results vary, but many customers report noticeable improvements in energy and well-being within 2-4 weeks of consistent use. For optimal results, we recommend taking supplements as directed for at least 90 days.'
-  },
-  {
-    id: 'guarantee',
-    question: 'What is your satisfaction guarantee?',
-    answer: "USANA offers a 90-day satisfaction guarantee on all products. If you're not completely satisfied, you can return the unused portion for a full refund or product exchange."
-  },
-  {
-    id: 'ingredients',
-    question: 'Are your supplements made with natural ingredients?',
-    answer: 'USANA uses a combination of natural and scientifically formulated ingredients to create optimal nutritional supplements. All ingredients are carefully selected for purity, potency, and bioavailability.'
-  },
-  {
-    id: 'shipping',
-    question: 'What are your shipping options?',
-    answer: 'We offer standard and express shipping options. Standard shipping typically takes 3-5 business days, while express shipping delivers within 1-2 business days. Free shipping is available for orders over $100.'
-  }
-]
+interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  content: string;
+  image_url: string;
+}
 
 export default function TestimonialsPage() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [openFaqId, setOpenFaqId] = useState<string | null>(null)
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const nextTestimonial = () => {
-    if (isAnimating) return
-    setIsAnimating(true)
-    setActiveIndex((current) => (current + 1) % testimonials.length)
-    setTimeout(() => setIsAnimating(false), 500)
-  }
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('testimonials')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-  const prevTestimonial = () => {
-    if (isAnimating) return
-    setIsAnimating(true)
-    setActiveIndex((current) => (current - 1 + testimonials.length) % testimonials.length)
-    setTimeout(() => setIsAnimating(false), 500)
-  }
+        if (error) throw error;
+        setTestimonials(data || []);
+      } catch (error) {
+        console.error('Error fetching testimonials:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const toggleFAQ = (id: string) => {
-    setOpenFaqId(openFaqId === id ? null : id)
+    fetchTestimonials();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading testimonials...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <ScrollReveal direction="up">
-        <section className="bg-white border-b">
-          <div className="container py-16">
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="heading-2 text-gray-900 mb-4">
-                Customer Success Stories
-              </h1>
-              <p className="text-xl text-gray-600">
-                Discover how USANA supplements have helped thousands of people achieve their 
-                health and wellness goals. Read their stories and experiences below.
-              </p>
-            </div>
-          </div>
-        </section>
-      </ScrollReveal>
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-4xl font-bold text-gray-900 sm:text-5xl"
+          >
+            Customer Testimonials
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mt-4 text-xl text-gray-600"
+          >
+            See what our customers are saying about their USANA experience
+          </motion.p>
+        </div>
 
-      {/* Featured Testimonial Carousel */}
-      <ScrollReveal direction="up">
-        <section className="section bg-white">
-          <div className="container">
-            <div className="max-w-4xl mx-auto">
+        <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {testimonials.map((testimonial, index) => (
+            <motion.div
+              key={testimonial.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="bg-white rounded-xl shadow-sm p-8 relative"
+            >
+              {/* Quote Icon */}
+              <div className="absolute top-4 right-4 text-primary-100">
+                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 32 32">
+                  <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
+                </svg>
+              </div>
+
+              {/* Content */}
               <div className="relative">
-                {/* Testimonial Card */}
-                <div className="card">
-                  <div className="flex flex-col md:flex-row gap-8 items-center">
-                    <div className="relative w-32 h-32 flex-shrink-0">
-                      <Image
-                        src={testimonials[activeIndex].image}
-                        alt={testimonials[activeIndex].name}
-                        fill
-                        className="object-cover rounded-full"
-                      />
-                    </div>
-                    <div>
-                      <div className="flex items-center mb-4">
-                        {[...Array(testimonials[activeIndex].rating)].map((_, i) => (
-                          <span key={i} className="text-yellow-400 text-2xl">★</span>
-                        ))}
-                      </div>
-                      <blockquote className="text-xl text-gray-600 italic mb-6">
-                        "{testimonials[activeIndex].content}"
-                      </blockquote>
-                      <div>
-                        <p className="font-bold text-gray-900">{testimonials[activeIndex].name}</p>
-                        <p className="text-gray-600">{testimonials[activeIndex].role}</p>
-                        <p className="text-primary-500 mt-2">Product: {testimonials[activeIndex].product}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Navigation Buttons */}
-                <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between pointer-events-none">
-                  <button
-                    onClick={prevTestimonial}
-                    className="pointer-events-auto -translate-x-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-600 hover:text-primary-500 transition-colors"
-                  >
-                    ←
-                  </button>
-                  <button
-                    onClick={nextTestimonial}
-                    className="pointer-events-auto translate-x-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-600 hover:text-primary-500 transition-colors"
-                  >
-                    →
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </ScrollReveal>
-
-      {/* Testimonial Grid */}
-      <ScrollReveal direction="up">
-        <section className="section">
-          <div className="container">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {testimonials.map((testimonial) => (
-                <div key={testimonial.id} className="card">
-                  <div className="flex items-start gap-4">
-                    <div className="relative w-16 h-16 flex-shrink-0">
-                      <Image
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        fill
-                        className="object-cover rounded-full"
-                      />
-                    </div>
-                    <div>
-                      <div className="flex items-center mb-2">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <span key={i} className="text-yellow-400">★</span>
-                        ))}
-                      </div>
-                      <p className="text-gray-600 mb-4">{testimonial.content}</p>
-                      <div>
-                        <p className="font-bold text-gray-900">{testimonial.name}</p>
-                        <p className="text-gray-600 text-sm">{testimonial.role}</p>
-                        <p className="text-primary-500 text-sm mt-2">
-                          Product: {testimonial.product}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </ScrollReveal>
-
-      {/* FAQ Section */}
-      <ScrollReveal direction="up">
-        <section id="faq" className="section bg-white">
-          <div className="container">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="heading-2 text-gray-900 mb-4">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-xl text-gray-600">
-                Find answers to common questions about USANA supplements, quality standards, 
-                and our satisfaction guarantee.
-              </p>
-            </div>
-            <div className="max-w-3xl mx-auto">
-              <div className="space-y-4">
-                {faqs.map((faq) => (
-                  <div
-                    key={faq.id}
-                    className="card hover:shadow-md transition-shadow cursor-pointer"
-                    onClick={() => toggleFAQ(faq.id)}
-                  >
-                    <button
-                      className="w-full flex items-center justify-between text-left"
-                      aria-expanded={openFaqId === faq.id}
-                    >
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {faq.question}
-                      </h3>
-                      <span className="ml-6 flex-shrink-0">
-                        {openFaqId === faq.id ? (
-                          <svg className="h-6 w-6 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                          </svg>
-                        ) : (
-                          <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        )}
+                <p className="text-gray-600 mb-6">{testimonial.content}</p>
+                <div className="flex items-center">
+                  {testimonial.image_url ? (
+                    <img
+                      src={testimonial.image_url}
+                      alt={testimonial.name}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
+                      <span className="text-primary-600 text-lg font-medium">
+                        {testimonial.name.charAt(0)}
                       </span>
-                    </button>
-                    {openFaqId === faq.id && (
-                      <div className="mt-4 pt-4 border-t">
-                        <p className="text-gray-600">{faq.answer}</p>
-                      </div>
-                    )}
+                    </div>
+                  )}
+                  <div className="ml-4">
+                    <h3 className="text-lg font-medium text-gray-900">{testimonial.name}</h3>
+                    <p className="text-gray-500">{testimonial.role}</p>
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
-      </ScrollReveal>
+            </motion.div>
+          ))}
+        </div>
 
-      {/* CTA Section */}
-      <ScrollReveal direction="up">
-        <section className="section bg-primary-500 text-white">
-          <div className="container text-center">
-            <h2 className="heading-2 mb-6">Experience the Difference</h2>
-            <p className="text-xl text-primary-50 mb-8 max-w-3xl mx-auto">
-              Join thousands of satisfied customers who have transformed their health with 
-              USANA's premium supplements. Start your journey today.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/products" className="btn-primary bg-white text-primary-500 hover:bg-gray-100">
-                Shop Now
-              </Link>
-              <Link href="/contact" className="btn-outline border-white text-white hover:bg-white hover:text-primary-500">
-                Contact Us
-              </Link>
-            </div>
+        {testimonials.length === 0 && (
+          <div className="text-center mt-16">
+            <p className="text-gray-500">No testimonials available yet.</p>
           </div>
-        </section>
-      </ScrollReveal>
+        )}
+      </div>
     </div>
-  )
+  );
 } 

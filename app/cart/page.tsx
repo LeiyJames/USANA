@@ -179,7 +179,7 @@ export default function CartPage() {
                         className="form-radio text-blue-400 h-5 w-5 focus:ring-blue-400 border-gray-300 checked:bg-blue-400 checked:hover:bg-blue-400"
                       />
                       <div className="flex items-center gap-2">
-                        <span className="text-gray-900">GCash</span>
+                      <span className="text-gray-900">GCash</span>
                         <span className="text-xs text-primary-500 bg-primary-50 px-2 py-1 rounded-full">Coming Soon</span>
                       </div>
                     </label>

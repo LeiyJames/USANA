@@ -4,20 +4,12 @@ import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 import { motion } from 'framer-motion';
+import type { Product } from '@/lib/products';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  tag: string;
-}
 
 interface ProductCarouselProps {
   products: Product[];
@@ -52,9 +44,11 @@ export default function ProductCarousel({ products, onAddToCart, formatPrice }: 
                       className="object-cover"
                     />
                   </div>
-                  <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    {product.tag}
-                  </div>
+                  {product.tag && (
+                    <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                      {product.tag}
+                    </div>
+                  )}
                 </div>
                 
                 <div className="p-6">
@@ -99,9 +93,11 @@ export default function ProductCarousel({ products, onAddToCart, formatPrice }: 
                   className="object-cover"
                 />
               </div>
-              <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                {product.tag}
-              </div>
+              {product.tag && (
+                <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  {product.tag}
+                </div>
+              )}
             </div>
             
             <div className="p-6">

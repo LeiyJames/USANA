@@ -1,60 +1,70 @@
 'use client';
 
 import Link from 'next/link';
-import ScrollReveal from './ScrollReveal';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 export default function Hero() {
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100">
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <ScrollReveal direction="left">
-              <h1 className="text-5xl md:text-6xl font-bold text-gray-900">
-                Transform Your Health with USANA
-              </h1>
-            </ScrollReveal>
-            
-            <ScrollReveal direction="left" delay={0.2}>
-              <p className="text-xl text-gray-600">
-                Discover premium nutritional supplements backed by science for optimal health and vitality.
-              </p>
-            </ScrollReveal>
-            
-            <ScrollReveal direction="up" delay={0.4}>
-              <div className="flex gap-4">
-                <Link
-                  href="/products"
-                  className="bg-primary-500 text-white px-8 py-3 rounded-lg hover:bg-primary-600 transition-all hover:scale-105"
-                >
-                  Shop Now
-                </Link>
-                <Link
-                  href="/about"
-                  className="border-2 border-primary-500 text-primary-500 px-8 py-3 rounded-lg hover:bg-primary-50 transition-all hover:scale-105"
-                >
-                  Learn More
-                </Link>
-              </div>
-            </ScrollReveal>
-          </div>
-          
-          <ScrollReveal direction="right">
-            <div className="relative">
-              <img
-                src="/hero-image.jpg"
-                alt="USANA Products"
-                className="rounded-lg shadow-xl"
-              />
-            </div>
-          </ScrollReveal>
-        </div>
+    <div className="relative min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-transparent"></div>
       </div>
+      
+      <div className="relative max-w-7xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center">
+        {/* Text Content */}
+        <div className="text-center lg:text-left lg:w-1/2 lg:pr-12">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight"
+          >
+            <span className="block text-gray-900">Fuel Your Health,</span>
+            <span className="block text-primary-600">Feel the Difference</span>
+          </motion.h1>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mt-6 text-lg sm:text-xl text-gray-600 max-w-3xl"
+          >
+            Experience the power of science-backed nutrition with USANA's premium supplements. Your journey to optimal health starts here.
+          </motion.p>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mt-8"
+          >
+            <Link 
+              href="/products"
+              className="inline-block bg-primary-600 text-white px-8 py-4 rounded-lg text-lg font-medium hover:bg-primary-700 transition-colors duration-200 transform hover:scale-105"
+            >
+              Shop Now
+            </Link>
+          </motion.div>
+        </div>
 
-      {/* Decorative Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 right-20 w-64 h-64 bg-primary-500 rounded-full blur-3xl opacity-20"></div>
-        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-primary-500 rounded-full blur-3xl opacity-20"></div>
+        {/* Image */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mt-12 lg:mt-0 lg:w-1/2"
+        >
+          <div className="relative w-full h-[400px] lg:h-[500px]">
+            <Image
+              src="/hero-image.jpg"
+              alt="USANA Supplements"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+        </motion.div>
       </div>
     </div>
   );
