@@ -127,20 +127,27 @@ export default function ProductPage() {
           className="space-y-6"
         >
         <div>
-            {product.tag && (
-              <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium mb-4">
-                {product.tag}
+            {product.tags && product.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {product.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium"
+                  >
+                    {tag}
               </span>
+                ))}
+              </div>
             )}
             <h1 className="text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
             <p className="text-xl text-gray-600">{product.description}</p>
           </div>
 
-          {product.bodyBenefits && product.bodyBenefits.length > 0 && (
+          {product.body_benefits && product.body_benefits.length > 0 && (
             <div className="space-y-3">
               <h3 className="text-lg font-semibold text-gray-900">Body Benefits</h3>
               <div className="flex flex-wrap gap-2">
-                {product.bodyBenefits.map((benefit) => (
+                {product.body_benefits.map((benefit) => (
                   <span
                     key={benefit}
                     className="px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-medium"
@@ -262,16 +269,6 @@ export default function ProductPage() {
               >
                 Ingredients
               </button>
-              <button
-                onClick={() => setActiveTab('usage')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'usage'
-                    ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                How to Use
-              </button>
             </nav>
           </div>
         </div>
@@ -379,54 +376,7 @@ export default function ProductPage() {
             </div>
           )}
 
-          {activeTab === 'usage' && (
-            <div className="prose max-w-none">
-              <h3 className="text-xl font-semibold mb-4">How to Use</h3>
-              <div className="space-y-6">
-                <div className="bg-gray-50 rounded-xl p-6">
-                  <h4 className="text-lg font-semibold mb-3">Recommended Usage</h4>
-                  {product.usage_instructions ? (
-                    <div className="text-gray-600 prose">
-                      {product.usage_instructions.split('\n').map((paragraph, index) => (
-                        <p key={index} className="mb-4">{paragraph}</p>
-                      ))}
-                    </div>
-                  ) : (
-                    <>
-                      <p className="text-gray-600 mb-4">
-                        For best results, follow the recommended dosage and usage instructions:
-                      </p>
-                      <ul className="space-y-3 text-gray-700">
-                        <li className="flex items-start">
-                          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-600 mr-3">1</span>
-                          Take with a full glass of water
-                        </li>
-                        <li className="flex items-start">
-                          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-600 mr-3">2</span>
-                          Use consistently for best results
-                        </li>
-                        <li className="flex items-start">
-                          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-600 mr-3">3</span>
-                          Store in a cool, dry place
-                        </li>
-                      </ul>
-                    </>
-                  )}
-                </div>
-                
-                <div className="bg-yellow-50 rounded-xl p-6">
-                  <h4 className="text-lg font-semibold text-yellow-800 mb-2">Important Note</h4>
-                  {product.safety_info ? (
-                    <p className="text-yellow-700">{product.safety_info}</p>
-                  ) : (
-                    <p className="text-yellow-700">
-                      Always consult with a healthcare professional before starting any new supplement regimen.
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
+
         </div>
       </motion.div>
     </div>

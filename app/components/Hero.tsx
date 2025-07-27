@@ -55,14 +55,30 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mt-12 lg:mt-0 lg:w-1/2"
         >
-          <div className="relative w-full h-[400px] lg:h-[500px]">
-            <Image
-              src="/hero-image.jpg"
+          <div className="relative w-full h-[400px] lg:h-[500px] bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
+            <img
+              src="/images/biomega.png"
               alt="USANA Supplements"
-              fill
-              className="object-contain"
-              priority
+              className="max-w-full max-h-full object-contain"
+              onError={(e) => {
+                console.error('Image failed to load:', e);
+                console.error('Image src:', '/images/biomega.png');
+                // Try alternative path if first fails
+                const img = e.target as HTMLImageElement;
+                if (img.src.includes('/images/biomega.png')) {
+                  console.log('Trying alternative path...');
+                  img.src = '/biomega.png';
+                }
+              }}
+              onLoad={() => {
+                console.log('Image loaded successfully');
+                console.log('Image src:', '/images/biomega.png');
+              }}
             />
+            {/* Debug info */}
+            <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white p-2 text-xs z-10">
+              Image: /images/biomega.png
+            </div>
           </div>
         </motion.div>
       </div>

@@ -5,6 +5,7 @@ import { getProducts, getCategories, getBodyBenefits } from '@/lib/products';
 import type { Product } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
 import ProductFilters from '@/components/ProductFilters';
+import { getCategoryFromTag, getBodyBenefitsFromTag } from '@/lib/tagMappings';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -34,24 +35,39 @@ export default function ProductsPage() {
 
   // Filter products based on search query and selected filters
   const filteredProducts = useMemo(() => {
+    console.log('Filtering products:', {
+      totalProducts: products.length,
+      searchQuery,
+      selectedCategories,
+      selectedBenefits
+    });
+    
     return products.filter(product => {
-      // Search query filter
+      // Search query filter - only search product name
+      const searchLower = searchQuery.toLowerCase();
       const matchesSearch = searchQuery === '' || 
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (product.body_benefits && product.body_benefits.some((benefit: string) => 
-          benefit.toLowerCase().includes(searchQuery.toLowerCase())
-        ));
+        product.name.toLowerCase().includes(searchLower);
 
-      // Category filter
+      // Category filter - based on tags mapping
       const matchesCategory = selectedCategories.length === 0 || 
-        selectedCategories.includes(product.category);
+        (product.tags && product.tags.length > 0 && selectedCategories.some(category => {
+          // Check if any of the product's tags map to the selected category
+          return product.tags!.some(tag => {
+            const mappedCategory = getCategoryFromTag(tag);
+            console.log(`Product "${product.name}" tag "${tag}" maps to category "${mappedCategory}", selected: "${category}"`);
+            return mappedCategory === category;
+          });
+        }));
 
-      // Body benefits filter
+      // Body benefits filter - based on tags mapping
       const matchesBenefits = selectedBenefits.length === 0 || 
-        (product.body_benefits && selectedBenefits.some((benefit: string) => 
-          product.body_benefits!.includes(benefit)
-        ));
+        (product.tags && product.tags.length > 0 && selectedBenefits.some(benefit => {
+          // Check if any of the product's tags map to the selected benefit
+          return product.tags!.some(tag => {
+            const mappedBenefits = getBodyBenefitsFromTag(tag);
+            return mappedBenefits.includes(benefit);
+          });
+        }));
 
       return matchesSearch && matchesCategory && matchesBenefits;
     });

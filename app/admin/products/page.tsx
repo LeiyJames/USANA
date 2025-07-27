@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { getCategories, getBodyBenefits } from '@/lib/products';
+import { tagMappings } from '@/lib/tagMappings';
 
 interface Product {
   id: string;
@@ -14,13 +16,13 @@ interface Product {
   category: string;
   stock: number;
   featured: boolean;
-  tag?: string;
-  bodyBenefits?: string[];
+  tags?: string[];
+  body_benefits?: string[];
   ingredients?: string[];
-  usageInstructions?: string;
-  keyFeatures?: string[];
-  safetyInfo?: string;
-  bestSeller?: boolean;
+  usage_instructions?: string;
+  key_features?: string[];
+  safety_info?: string;
+  best_seller?: boolean;
 }
 
 export default function ProductsPage() {
@@ -33,6 +35,12 @@ export default function ProductsPage() {
   const [imagePreview, setImagePreview] = useState<string>('');
   const [uploadProgress, setUploadProgress] = useState(0);
 
+
+  const [availableCategories] = useState<string[]>(getCategories());
+  const [availableBodyBenefits] = useState<string[]>(getBodyBenefits());
+
+
+
   // Form state
   const [formData, setFormData] = useState({
     name: '',
@@ -41,13 +49,11 @@ export default function ProductsPage() {
     category: '',
     stock: '',
     featured: false,
-    tag: '',
-    body_benefits: [] as string[],
+    tags: [] as string[],
+    bodyBenefits: [] as string[],
     ingredients: [] as string[],
-    usage_instructions: '',
-    key_features: [] as string[],
-    safety_info: '',
-    best_seller: false
+    keyFeatures: [] as string[],
+    bestSeller: false
   });
 
   // Add a helper function for array fields
@@ -83,10 +89,66 @@ export default function ProductsPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
-    }));
+    
+    if (name === 'tags') {
+      // Handle tags as array
+      const tagsArray = value.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+      setFormData(prev => ({
+        ...prev,
+        tags: tagsArray
+      }));
+
+      // Auto-populate category and body benefits based on tags
+      let allCategories = new Set<string>();
+      let allBenefits = new Set<string>();
+      
+      console.log('Processing tags:', tagsArray);
+      
+      tagsArray.forEach(tag => {
+        const tagLower = tag.toLowerCase().trim();
+        console.log('Processing tag:', tag, '->', tagLower);
+        
+        // First try exact match
+        let mapping = tagMappings[tagLower];
+        
+        // If no exact match, try partial match
+        if (!mapping) {
+          for (const [key, value] of Object.entries(tagMappings)) {
+            if (tagLower.includes(key) || key.includes(tagLower)) {
+              mapping = value;
+              console.log('Found partial match:', key, '->', value);
+              break;
+            }
+          }
+        } else {
+          console.log('Found exact match:', tagLower, '->', mapping);
+        }
+        
+        if (mapping) {
+          allCategories.add(mapping.category);
+          mapping.bodyBenefits.forEach(benefit => allBenefits.add(benefit));
+        } else {
+          console.log('No mapping found for tag:', tag);
+        }
+      });
+      
+      console.log('Final categories:', Array.from(allCategories));
+      console.log('Final benefits:', Array.from(allBenefits));
+      
+      if (allCategories.size > 0 || allBenefits.size > 0) {
+        setFormData(prev => ({
+          ...prev,
+          category: Array.from(allCategories)[0] || '', // Use first category if multiple
+          bodyBenefits: Array.from(allBenefits)
+        }));
+      }
+    } else {
+      // Handle other fields normally
+      setFormData(prev => ({
+        ...prev,
+        [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      }));
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -166,13 +228,11 @@ export default function ProductsPage() {
         category: formData.category.trim(),
         stock: parseInt(formData.stock) || 0,
         featured: Boolean(formData.featured),
-        tag: formData.tag.trim() || null,
-        body_benefits: formData.body_benefits,
+        tags: formData.tags,
+        body_benefits: formData.bodyBenefits,
         ingredients: formData.ingredients,
-        usage_instructions: formData.usage_instructions.trim() || null,
-        key_features: formData.key_features,
-        safety_info: formData.safety_info.trim() || null,
-        best_seller: Boolean(formData.best_seller),
+        key_features: formData.keyFeatures,
+        best_seller: Boolean(formData.bestSeller),
         updated_at: new Date().toISOString()
       };
 
@@ -234,13 +294,11 @@ export default function ProductsPage() {
       category: product.category,
       stock: product.stock.toString(),
       featured: product.featured,
-      tag: product.tag || '',
-      body_benefits: product.body_benefits || [],
+      tags: product.tags || [],
+      bodyBenefits: product.body_benefits || [],
       ingredients: product.ingredients || [],
-      usage_instructions: product.usage_instructions || '',
-      key_features: product.key_features || [],
-      safety_info: product.safety_info || '',
-      best_seller: product.best_seller || false
+      keyFeatures: product.key_features || [],
+      bestSeller: product.best_seller || false
     });
     setImagePreview(product.image);
     setIsEditing(true);
@@ -256,13 +314,11 @@ export default function ProductsPage() {
       category: '',
       stock: '',
       featured: false,
-      tag: '',
-      body_benefits: [],
+      tags: [],
+      bodyBenefits: [],
       ingredients: [],
-      usage_instructions: '',
-      key_features: [],
-      safety_info: '',
-      best_seller: false
+      keyFeatures: [],
+      bestSeller: false
     });
     setImageFile(null);
     setImagePreview('');
@@ -328,10 +384,19 @@ export default function ProductsPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto"
           >
-            <div className="px-6 py-4 border-b border-gray-200">
+            <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
               <h2 className="text-xl font-semibold text-gray-900">
                 {editingProduct ? 'Edit Product' : 'Add New Product'}
               </h2>
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
@@ -349,18 +414,7 @@ export default function ProductsPage() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Category</label>
-                  <input
-                    type="text"
-                    name="category"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="e.g., Vitamins & Supplements"
-                    className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md placeholder-gray-400 text-gray-900 focus:outline-none focus:border-primary-500"
-                  />
-                </div>
+
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Price</label>
@@ -414,9 +468,9 @@ export default function ProductsPage() {
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700">Body Benefits</label>
                   <textarea
-                    name="body_benefits"
-                    value={formData.body_benefits.join(', ')}
-                    onChange={(e) => handleArrayInputChange('body_benefits', e.target.value)}
+                    name="bodyBenefits"
+                    value={formData.bodyBenefits.join(', ')}
+                    onChange={(e) => handleArrayInputChange('bodyBenefits', e.target.value)}
                     rows={3}
                     placeholder="Enter benefits separated by commas (e.g., Heart Health, Immune Support, Joint Health)"
                     className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md placeholder-gray-400 text-gray-900 focus:outline-none focus:border-primary-500"
@@ -439,26 +493,15 @@ export default function ProductsPage() {
                   />
                 </div>
 
-                {/* Usage Instructions */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700">Usage Instructions</label>
-                  <textarea
-                    name="usage_instructions"
-                    value={formData.usage_instructions}
-                    onChange={handleInputChange}
-                    rows={3}
-                    placeholder="Enter detailed usage instructions..."
-                    className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md placeholder-gray-400 text-gray-900 focus:outline-none focus:border-primary-500"
-                  />
-                </div>
+
 
                 {/* Key Features */}
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700">Key Features</label>
                   <textarea
-                    name="key_features"
-                    value={formData.key_features.join(', ')}
-                    onChange={(e) => handleArrayInputChange('key_features', e.target.value)}
+                    name="keyFeatures"
+                    value={formData.keyFeatures.join(', ')}
+                    onChange={(e) => handleArrayInputChange('keyFeatures', e.target.value)}
                     rows={3}
                     placeholder="Enter key features separated by commas"
                     className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md placeholder-gray-400 text-gray-900 focus:outline-none focus:border-primary-500"
@@ -468,30 +511,22 @@ export default function ProductsPage() {
                   </p>
                 </div>
 
-                {/* Safety Information */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700">Safety Information</label>
-                  <textarea
-                    name="safety_info"
-                    value={formData.safety_info}
-                    onChange={handleInputChange}
-                    rows={3}
-                    placeholder="Enter important safety information and warnings..."
-                    className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md placeholder-gray-400 text-gray-900 focus:outline-none focus:border-primary-500"
-                  />
-                </div>
+
 
                 {/* Tags and Flags */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Tag (Optional)</label>
+                  <label className="block text-sm font-medium text-gray-700">Tags (Auto-populates Category & Benefits)</label>
                   <input
                     type="text"
-                    name="tag"
-                    value={formData.tag}
+                    name="tags"
+                    value={formData.tags?.join(', ') || ''}
                     onChange={handleInputChange}
-                    placeholder="e.g., New, Best Seller, Limited Edition"
+                    placeholder="e.g., heart health, immune health, skin health, muscle health, brain health, bone health, digestive health, eye health, detox support"
                     className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md placeholder-gray-400 text-gray-900 focus:outline-none focus:border-primary-500"
                   />
+                  <p className="mt-1 text-sm text-gray-500">
+                    Enter multiple tags separated by commas to automatically populate category and body benefits. Examples: heart health, immune health, skin health, muscle health, etc.
+                  </p>
                 </div>
 
                 <div className="flex items-center space-x-6">
@@ -509,8 +544,8 @@ export default function ProductsPage() {
                   <label className="flex items-center">
                     <input
                       type="checkbox"
-                      name="best_seller"
-                      checked={formData.best_seller}
+                      name="bestSeller"
+                      checked={formData.bestSeller}
                       onChange={handleInputChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
@@ -638,7 +673,7 @@ export default function ProductsPage() {
                     </div>
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                      <div className="text-sm text-gray-500">{product.tag}</div>
+                      <div className="text-sm text-gray-500">{product.tags?.join(', ') || ''}</div>
                     </div>
                   </div>
                 </td>

@@ -9,7 +9,7 @@ export interface Product {
   category: string;
   stock: number;
   featured: boolean;
-  tag?: string;
+  tags?: string[];
   body_benefits?: string[];
   ingredients?: string[];
   usage_instructions?: string;
@@ -64,12 +64,28 @@ export async function getProductsByCategory(category: string): Promise<Product[]
   return data || [];
 }
 
+export async function getFeaturedProducts(): Promise<Product[]> {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('featured', true)
+    .order('created_at', { ascending: false })
+    .limit(6);
+
+  if (error) {
+    console.error('Error fetching featured products:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
 export function getCategories(): string[] {
   return [
-    'Nutritionals',
-    'Protein, shakes, bar',
+    'Shop All',
+    'Nutritional Supplements',
     'Skin Care',
-    'Personal Care'
+    'Protein, Shakes & Bars'
   ];
 }
 
@@ -77,9 +93,23 @@ export function getBodyBenefits(): string[] {
   return [
     'Total Body Health',
     'Bone and Joint Health',
-    'Skin Health',
+    'Brain and Nerve Health',
     'Heart Health',
     'Immune Health',
-    'Healthy Weight'
+    'Digestive Health',
+    'Eye Health',
+    'Healthy Energy',
+    'Healthy Weight',
+    'Detox Support',
+    'Men\'s Health',
+    'Women\'s Health',
+    'Skin Health',
+    'Postbiotic Skincare',
+    'Muscle Health',
+    'Stress, Mood & Relaxation',
+    'Prenatal Health',
+    'Child & Teen Health',
+    'Foundational Health',
+    'Sleep Health'
   ];
 } 

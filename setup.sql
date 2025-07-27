@@ -44,7 +44,7 @@ CREATE TABLE public.products (
     category text,
     stock integer DEFAULT 0,
     featured boolean DEFAULT false,
-    tag text,
+    tags text[] DEFAULT '{}',
     body_benefits text[] DEFAULT '{}',
     ingredients text[] DEFAULT '{}',
     usage_instructions text,
