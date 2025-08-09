@@ -44,11 +44,7 @@ export default function ProductCarousel({ products, onAddToCart, formatPrice }: 
                       className="object-cover"
                     />
                   </div>
-                  {product.tag && (
-                    <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                      {product.tag}
-                    </div>
-                  )}
+                  
                 </div>
                 
                 <div className="p-6">
@@ -93,11 +89,7 @@ export default function ProductCarousel({ products, onAddToCart, formatPrice }: 
                   className="object-cover"
                 />
               </div>
-              {product.tag && (
-                <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                  {product.tag}
-                </div>
-              )}
+              
             </div>
             
             <div className="p-6">
