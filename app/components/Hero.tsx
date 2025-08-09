@@ -30,7 +30,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mt-6 text-lg sm:text-xl text-gray-600 max-w-3xl"
           >
-            Experience the power of science-backed nutrition with USANA's premium supplements. Your journey to optimal health starts here.
+            Experience the power of science-backed nutrition with USANA&apos;s premium supplements. Your journey to optimal health starts here.
           </motion.p>
           
           <motion.div 
@@ -56,29 +56,13 @@ export default function Hero() {
           className="mt-12 lg:mt-0 lg:w-1/2"
         >
           <div className="relative w-full h-[400px] lg:h-[500px] bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
-            <img
+            <Image
               src="/images/biomega.png"
               alt="USANA Supplements"
-              className="max-w-full max-h-full object-contain"
-              onError={(e) => {
-                console.error('Image failed to load:', e);
-                console.error('Image src:', '/images/biomega.png');
-                // Try alternative path if first fails
-                const img = e.target as HTMLImageElement;
-                if (img.src.includes('/images/biomega.png')) {
-                  console.log('Trying alternative path...');
-                  img.src = '/biomega.png';
-                }
-              }}
-              onLoad={() => {
-                console.log('Image loaded successfully');
-                console.log('Image src:', '/images/biomega.png');
-              }}
+              fill
+              className="object-contain"
+              priority
             />
-            {/* Debug info */}
-            <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white p-2 text-xs z-10">
-              Image: /images/biomega.png
-            </div>
           </div>
         </motion.div>
       </div>

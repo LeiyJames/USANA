@@ -270,12 +270,12 @@ export default function ProductPage() {
                 {product.description}
               </p>
               <div className="bg-gray-50 rounded-xl p-6">
-                <h4 className="text-lg font-semibold mb-3">Why Choose {product.name}?</h4>
+               <h4 className="text-lg font-semibold mb-3">Why Choose {product.name}?</h4>
                 <ul className="space-y-3 text-gray-600">
                   {product.key_features && product.key_features.length > 0 ? (
                     product.key_features.map((feature, index) => (
                       <li key={index} className="flex items-start">
-                        <svg className="w-5 h-5 text-green-500 mr-3 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <svg className="w-5 h-5 text-green-500 mr-3 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         {feature}
@@ -299,7 +299,7 @@ export default function ProductPage() {
                         <svg className="w-5 h-5 text-green-500 mr-3 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
-                        Made with USANA InCelligence Technology
+                         Made with USANA InCelligence Technology
                       </li>
                     </>
                   )}
@@ -348,7 +348,7 @@ export default function ProductPage() {
                   <div className="space-y-4">
                     <div className="flex items-start">
                       <span className="inline-block w-2 h-2 rounded-full bg-primary-500 mt-2 mr-3"></span>
-                      <p className="text-gray-700">All ingredients meet USANA's high quality standards</p>
+                      <p className="text-gray-700">All ingredients meet USANA&apos;s high quality standards</p>
         </div>
                     <div className="flex items-start">
                       <span className="inline-block w-2 h-2 rounded-full bg-primary-500 mt-2 mr-3"></span>

@@ -35,7 +35,7 @@ export default function AboutPage() {
               <div className="space-y-6">
                 <h2 className="text-3xl font-bold text-gray-900">Our Mission</h2>
                 <p className="text-lg text-gray-600">
-                  The USANA Foundation's mission is to develop a network of communities built on long-lasting, sustainable, and nutritious food.
+                  The USANA Foundation&apos;s mission is to develop a network of communities built on long-lasting, sustainable, and nutritious food.
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">

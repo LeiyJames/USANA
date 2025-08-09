@@ -80,7 +80,7 @@ export default function ContactPage() {
               </h1>
               <p className="text-xl text-gray-600">
                 Have questions about our products or need support? 
-                We're here to help you on your health journey.
+                We&apos;re here to help you on your health journey.
               </p>
             </div>
           </div>

@@ -35,7 +35,7 @@ export default function TrustSignals() {
               Why Choose USANA?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We're committed to providing the highest quality nutritional supplements 
+              We&apos;re committed to providing the highest quality nutritional supplements 
               through science and innovation.
             </p>
           </div>

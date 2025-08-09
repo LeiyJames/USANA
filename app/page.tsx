@@ -74,7 +74,7 @@ export default function HomePage() {
                   <span className="text-primary-500">Feel the Difference</span>
                 </h1>
                 <p className="text-xl text-gray-600">
-                  Experience the power of science-backed nutrition with USANA's premium supplements. 
+                  Experience the power of science-backed nutrition with USANA&apos;s premium supplements. 
                   Your journey to optimal health starts here.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -132,7 +132,7 @@ export default function HomePage() {
                 Why Choose USANA?
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                We're committed to providing the highest quality nutritional supplements through science and innovation.
+                We&apos;re committed to providing the highest quality nutritional supplements through science and innovation.
               </p>
             </div>
           </ScrollReveal>
@@ -194,7 +194,7 @@ export default function HomePage() {
               Start Your Health Journey Today
             </h2>
             <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-              Join thousands who have experienced the difference with USANA's premium supplements.
+              Join thousands who have experienced the difference with USANA&apos;s premium supplements.
             </p>
             <Link 
               href="/products" 

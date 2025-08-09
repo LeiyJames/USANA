@@ -40,7 +40,7 @@ export default function CartPage() {
           <div className="card text-center py-12 sm:py-16">
             <h1 className="heading-2 text-gray-900 mb-4 sm:mb-6">Your Cart is Empty</h1>
             <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 px-4">
-              Looks like you haven't added any products to your cart yet.
+              Looks like you haven&apos;t added any products to your cart yet.
             </p>
             <Link href="/products" className="btn-primary inline-block">
               Browse Products
