@@ -23,6 +23,7 @@ export default function AdminLayout({
         
         if (!session) {
           console.log('No session found, redirecting to login');
+          setLoading(false);
           router.replace('/admin/login');
           return;
         }
@@ -35,12 +36,14 @@ export default function AdminLayout({
 
         if (error) {
           console.error('Error fetching user:', error);
+          setLoading(false);
           router.replace('/admin/login');
           return;
         }
 
         if (!user || user.role !== 'admin') {
           console.log('User is not admin, redirecting to home');
+          setLoading(false);
           router.replace('/');
           return;
         }
@@ -49,15 +52,22 @@ export default function AdminLayout({
         setLoading(false);
       } catch (error) {
         console.error('Auth check error:', error);
+        setLoading(false);
         router.replace('/admin/login');
       }
     };
+
+    if (pathname === '/admin/login') {
+      setLoading(false);
+      return;
+    }
 
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('Auth state changed:', event);
       if (event === 'SIGNED_OUT') {
+        setLoading(false);
         router.replace('/admin/login');
       } else if (event === 'SIGNED_IN') {
         checkAuth();
@@ -67,7 +77,7 @@ export default function AdminLayout({
     return () => {
       subscription.unsubscribe();
     };
-  }, [router]);
+  }, [router, pathname]);
 
   // Close sidebar when route changes on mobile
   useEffect(() => {
@@ -86,6 +96,10 @@ export default function AdminLayout({
     };
   }, [isSidebarOpen]);
 
+  if (pathname === '/admin/login') {
+    return children;
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -95,10 +109,6 @@ export default function AdminLayout({
         </div>
       </div>
     );
-  }
-
-  if (pathname === '/admin/login') {
-    return children;
   }
 
   const navigation = [

@@ -52,8 +52,7 @@ const trustIndicators = [
   }
 ]
 
-// Default featured product image
-const defaultProductImage = '/images/default-product.jpg';
+const defaultProductImage = '/images/biomega.png';
 
 export default function HomePage() {
   const { addItem } = useCart()
@@ -99,7 +98,7 @@ export default function HomePage() {
                 >
                   <Image
                     src={defaultProductImage}
-                    alt="USANA Supplements"
+                    alt="USANA BiOmega"
                     width={600}
                     height={600}
                     className="rounded-2xl shadow-xl"

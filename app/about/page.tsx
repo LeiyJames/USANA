@@ -69,12 +69,12 @@ export default function AboutPage() {
               </div>
             </ScrollReveal>
             <ScrollReveal direction="right">
-              <div className="relative h-[500px] rounded-lg overflow-hidden shadow-xl">
+              <div className="relative h-[380px] sm:h-[480px] md:h-[560px] lg:h-[640px] rounded-lg overflow-hidden shadow-xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=800&h=1000&fit=crop"
+                  src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=1200&q=80"
                   alt="USANA Research Facility"
                   fill
-                  className="object-cover"
+                  className="object-cover object-center"
                   priority
                 />
               </div>

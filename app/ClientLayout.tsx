@@ -41,8 +41,8 @@ export default function ClientLayout({
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-              <p className="text-gray-600">Email: support@usana.com</p>
-              <p className="text-gray-600">Phone: (123) 456-7890</p>
+              <p className="text-gray-600">Email: agy_2873@yahoo.com.ph</p>
+              <p className="text-gray-600">Phone: 09162690185</p>
             </div>
           </div>
           <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">

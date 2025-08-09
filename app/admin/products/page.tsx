@@ -29,6 +29,7 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -201,6 +202,7 @@ export default function ProductsPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setNotice(null);
 
     try {
       console.log('Starting product save...');
@@ -271,10 +273,8 @@ export default function ProductsPage() {
 
       await fetchProducts();
       handleCancel();
-      
-      // Show success message
-      setError('Product saved successfully!');
-      setTimeout(() => setError(null), 3000);
+      setNotice('Product saved successfully!');
+      setTimeout(() => setNotice(null), 3000);
     } catch (err) {
       console.error('Error saving product:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to save product. Please try again.';
@@ -373,6 +373,11 @@ export default function ProductsPage() {
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
           {error}
+        </div>
+      )}
+      {notice && (
+        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md">
+          {notice}
         </div>
       )}
 

@@ -37,23 +37,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="p-4">
           <h2 className="font-semibold text-lg mb-2">{product.name}</h2>
           <p className="text-gray-600 text-sm mb-2 line-clamp-2">{product.description}</p>
-          {product.tags && product.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-2">
-              {product.tags.slice(0, 3).map(tag => (
-                <span
-                  key={tag}
-                  className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
-              {product.tags.length > 3 && (
-                <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                  +{product.tags.length - 3} more
-                </span>
-              )}
-            </div>
-          )}
+          
           {product.body_benefits && (
             <div className="flex flex-wrap gap-2 mb-3">
               {product.body_benefits.map(benefit => (

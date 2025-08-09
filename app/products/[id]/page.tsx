@@ -126,19 +126,7 @@ export default function ProductPage() {
           transition={{ delay: 0.2 }}
           className="space-y-6"
         >
-        <div>
-            {product.tags && product.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {product.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium"
-                  >
-                    {tag}
-              </span>
-                ))}
-              </div>
-            )}
+          <div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
             <p className="text-xl text-gray-600">{product.description}</p>
           </div>
