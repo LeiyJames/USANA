@@ -1,12 +1,13 @@
 "use client"
 
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import emailjs from '@emailjs/browser'
-import { emailjsConfig } from '@/config/emailjs'
+// import emailjs from '@emailjs/browser'
+// import { emailjsConfig } from '@/config/emailjs'
 import { CartProvider } from '@/contexts/CartContext'
 import Navigation from './components/Navigation'
 import BackToTop from './components/BackToTop'
+import Toast from './components/Toast'
 
 export default function ClientLayout({
   children,
@@ -15,10 +16,22 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname()
   const isAdmin = pathname?.startsWith('/admin')
+  const [showDbToast, setShowDbToast] = useState(false)
+
   useEffect(() => {
     // Initialize EmailJS
-    emailjs.init(emailjsConfig.publicKey)
+    // emailjs.init(emailjsConfig.publicKey)
   }, [])
+
+  useEffect(() => {
+    if (pathname === '/' || pathname?.startsWith('/products')) {
+      // Reset toast state to trigger animation if it's already showing
+      setShowDbToast(false);
+      // Small timeout to allow state to reset before showing again
+      const timer = setTimeout(() => setShowDbToast(true), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [pathname])
 
   if (isAdmin) {
     return (
@@ -52,8 +65,8 @@ export default function ClientLayout({
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-              <p className="text-gray-600">Email: agy_2873@yahoo.com.ph</p>
-              <p className="text-gray-600">Phone: 09162690185</p>
+              <p className="text-gray-600">Email: contact@usana-demo.com</p>
+              <p className="text-gray-600">Phone: +1 (555) 123-4567</p>
             </div>
           </div>
           <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
@@ -62,6 +75,12 @@ export default function ClientLayout({
         </div>
       </footer>
       <BackToTop />
+      <Toast
+        message="Notice: Database connection is paused. Showing demo data."
+        type="info"
+        isVisible={showDbToast}
+        onClose={() => setShowDbToast(false)}
+      />
     </CartProvider>
   )
 } 

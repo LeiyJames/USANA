@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { supabase } from '@/lib/supabase';
+// import { supabase } from '@/lib/supabase';
 
 export default function AdminLayout({
   children,
@@ -19,36 +19,36 @@ export default function AdminLayout({
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        // const { data: { session } } = await supabase.auth.getSession();
         
-        if (!session) {
-          console.log('No session found, redirecting to login');
-          setLoading(false);
-          router.replace('/admin/login');
-          return;
-        }
+        // if (!session) {
+        //   console.log('No session found, redirecting to login');
+        //   setLoading(false);
+        //   router.replace('/admin/login');
+        //   return;
+        // }
 
-        const { data: user, error } = await supabase
-          .from('users')
-          .select('role')
-          .eq('id', session.user.id)
-          .single();
+        // const { data: user, error } = await supabase
+        //   .from('users')
+        //   .select('role')
+        //   .eq('id', session.user.id)
+        //   .single();
 
-        if (error) {
-          console.error('Error fetching user:', error);
-          setLoading(false);
-          router.replace('/admin/login');
-          return;
-        }
+        // if (error) {
+        //   console.error('Error fetching user:', error);
+        //   setLoading(false);
+        //   router.replace('/admin/login');
+        //   return;
+        // }
 
-        if (!user || user.role !== 'admin') {
-          console.log('User is not admin, redirecting to home');
-          setLoading(false);
-          router.replace('/');
-          return;
-        }
+        // if (!user || user.role !== 'admin') {
+        //   console.log('User is not admin, redirecting to home');
+        //   setLoading(false);
+        //   router.replace('/');
+        //   return;
+        // }
 
-        console.log('Auth check passed, user is admin');
+        // console.log('Auth check passed, user is admin');
         setLoading(false);
       } catch (error) {
         console.error('Auth check error:', error);
@@ -64,19 +64,19 @@ export default function AdminLayout({
 
     checkAuth();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event);
-      if (event === 'SIGNED_OUT') {
-        setLoading(false);
-        router.replace('/admin/login');
-      } else if (event === 'SIGNED_IN') {
-        checkAuth();
-      }
-    });
+    // const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    //   console.log('Auth state changed:', event);
+    //   if (event === 'SIGNED_OUT') {
+    //     setLoading(false);
+    //     router.replace('/admin/login');
+    //   } else if (event === 'SIGNED_IN') {
+    //     checkAuth();
+    //   }
+    // });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+    // return () => {
+    //   subscription.unsubscribe();
+    // };
   }, [router, pathname]);
 
   // Close sidebar when route changes on mobile
@@ -158,7 +158,8 @@ export default function AdminLayout({
               ))}
               <button
                 onClick={async () => {
-                  await supabase.auth.signOut();
+                  // await supabase.auth.signOut();
+                  router.push('/admin/login');
                 }}
                 className="ml-8 text-sm font-medium text-gray-500 hover:text-gray-700"
               >
@@ -220,7 +221,8 @@ export default function AdminLayout({
                 <div className="border-t border-gray-200 p-4">
                   <button
                     onClick={async () => {
-                      await supabase.auth.signOut();
+                      // await supabase.auth.signOut();
+                      router.push('/admin/login');
                     }}
                     className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
                   >

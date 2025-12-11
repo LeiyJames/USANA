@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+// import { supabase } from '@/lib/supabase';
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -18,15 +18,18 @@ export default function AdminLogin() {
 
     try {
       // Basic login
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      // const { error: signInError } = await supabase.auth.signInWithPassword({
+      //   email,
+      //   password,
+      // });
 
-      if (signInError) {
-        throw signInError;
-      }
-
+      // if (signInError) {
+      //   throw signInError;
+      // }
+      
+      // Mock login delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
       // If login successful, redirect to admin
       router.push('/admin');
       

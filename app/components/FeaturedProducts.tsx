@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
-import type { Product } from '@/lib/products';
+// import { supabase } from '@/lib/supabase';
+import { type Product, getFeaturedProducts } from '@/lib/products';
 
 // Add price formatting helper
 const formatPrice = (price: number) => {
@@ -25,13 +25,14 @@ export default function FeaturedProducts() {
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
       try {
-        const { data, error } = await supabase
-          .from('products')
-          .select('*')
-          .eq('featured', true)
-          .order('created_at', { ascending: false });
+        // const { data, error } = await supabase
+        //   .from('products')
+        //   .select('*')
+        //   .eq('featured', true)
+        //   .order('created_at', { ascending: false });
 
-        if (error) throw error;
+        // if (error) throw error;
+        const data = await getFeaturedProducts();
 
         setProducts(data || []);
       } catch (err) {
@@ -90,10 +91,11 @@ export default function FeaturedProducts() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
+              className="h-full"
             >
-              <Link href={`/products/${product.id}`}>
-                <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="relative h-64">
+              <Link href={`/products/${product.id}`} className="block h-full">
+                <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
+                  <div className="relative h-64 shrink-0">
                     <Image
                       src={product.image || '/placeholder-product.jpg'}
                       alt={product.name}
@@ -101,14 +103,14 @@ export default function FeaturedProducts() {
                       className="object-cover"
                     />
                   </div>
-                  <div className="p-6">
+                  <div className="p-6 flex flex-col flex-1">
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
                       {product.name}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">
+                    <p className="text-gray-600 mb-4 line-clamp-2 flex-grow">
                       {product.description}
                     </p>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mt-auto">
                       <span className="text-xl font-bold text-gray-900">
                         {formatPrice(product.price)}
                       </span>

@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+// import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { getCategories, getBodyBenefits } from '@/lib/products';
+import { getCategories, getBodyBenefits, getProducts, createProduct, updateProduct, deleteProduct, uploadProductImage } from '@/lib/products';
 import { tagMappings } from '@/lib/tagMappings';
 
 interface Product {
@@ -73,12 +73,13 @@ export default function ProductsPage() {
 
   const fetchProducts = async () => {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: false });
+      // const { data, error } = await supabase
+      //   .from('products')
+      //   .select('*')
+      //   .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      // if (error) throw error;
+      const data = await getProducts();
       setProducts(data || []);
     } catch (err) {
       console.error('Error fetching products:', err);
@@ -161,33 +162,35 @@ export default function ProductsPage() {
   };
 
   const uploadImage = async (file: File): Promise<string> => {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-    const filePath = `${fileName}`;
+    // const fileExt = file.name.split('.').pop();
+    // const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+    // const filePath = `${fileName}`;
 
     try {
       setUploadProgress(0);
-      console.log('Starting image upload:', { fileName, filePath });
+      console.log('Starting image upload');
 
-      // Upload the file
-      const { data, error: uploadError } = await supabase.storage
-        .from('products')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: true
-        });
+      // // Upload the file
+      // const { data, error: uploadError } = await supabase.storage
+      //   .from('products')
+      //   .upload(filePath, file, {
+      //     cacheControl: '3600',
+      //     upsert: true
+      //   });
 
-      if (uploadError) {
-        console.error('Upload error:', uploadError);
-        throw uploadError;
-      }
+      // if (uploadError) {
+      //   console.error('Upload error:', uploadError);
+      //   throw uploadError;
+      // }
 
-      console.log('File uploaded successfully:', data);
+      // console.log('File uploaded successfully:', data);
 
-      // Get the public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('products')
-        .getPublicUrl(filePath);
+      // // Get the public URL
+      // const { data: { publicUrl } } = supabase.storage
+      //   .from('products')
+      //   .getPublicUrl(filePath);
+
+      const publicUrl = await uploadProductImage(file);
 
       console.log('Public URL generated:', publicUrl);
       setUploadProgress(100);
@@ -235,38 +238,40 @@ export default function ProductsPage() {
         ingredients: formData.ingredients,
         key_features: formData.keyFeatures,
         best_seller: Boolean(formData.bestSeller),
-        updated_at: new Date().toISOString()
+        // updated_at: new Date().toISOString()
       };
 
       console.log('Saving product data:', productData);
 
       if (editingProduct) {
         console.log('Updating existing product:', editingProduct.id);
-        const { data: updateData, error: updateError } = await supabase
-          .from('products')
-          .update(productData)
-          .eq('id', editingProduct.id)
-          .select()
-          .single();
+        // const { data: updateData, error: updateError } = await supabase
+        //   .from('products')
+        //   .update(productData)
+        //   .eq('id', editingProduct.id)
+        //   .select()
+        //   .single();
 
-        if (updateError) {
-          console.error('Update error:', updateError);
-          throw updateError;
-        }
+        // if (updateError) {
+        //   console.error('Update error:', updateError);
+        //   throw updateError;
+        // }
+        const updateData = await updateProduct(editingProduct.id, productData);
 
         console.log('Product updated successfully:', updateData);
       } else {
         console.log('Creating new product');
-        const { data: insertData, error: insertError } = await supabase
-          .from('products')
-          .insert([{ ...productData, created_at: new Date().toISOString() }])
-          .select()
-          .single();
+        // const { data: insertData, error: insertError } = await supabase
+        //   .from('products')
+        //   .insert([{ ...productData, created_at: new Date().toISOString() }])
+        //   .select()
+        //   .single();
 
-        if (insertError) {
-          console.error('Insert error:', insertError);
-          throw insertError;
-        }
+        // if (insertError) {
+        //   console.error('Insert error:', insertError);
+        //   throw insertError;
+        // }
+        const insertData = await createProduct(productData);
 
         console.log('Product created successfully:', insertData);
       }
@@ -330,12 +335,13 @@ export default function ProductsPage() {
 
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from('products')
-        .delete()
-        .eq('id', id);
+      // const { error } = await supabase
+      //   .from('products')
+      //   .delete()
+      //   .eq('id', id);
 
-      if (error) throw error;
+      // if (error) throw error;
+      await deleteProduct(id);
       await fetchProducts();
     } catch (err) {
       console.error('Error deleting product:', err);

@@ -219,21 +219,21 @@ export default function ContactPage() {
                     <span className="text-2xl">📞</span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Phone</h3>
-                  <p className="text-gray-600">09162690185</p>
+                  <p className="text-gray-600">+1 (555) 123-4567</p>
                 </div>
                 <div>
                   <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl">✉️</span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Email</h3>
-                  <p className="text-gray-600">agy_2873@yahoo.com.ph</p>
+                  <p className="text-gray-600">contact@usana-demo.com</p>
                 </div>
                 <div>
                   <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl">🏢</span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Address</h3>
-                  <p className="text-gray-600">Ipil, Zamboanga Sibugay</p>
+                  <p className="text-gray-600">123 Wellness Way, Healthy City, HC 12345</p>
                 </div>
               </div>
             </div>

@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+// import { supabase } from '@/lib/supabase';
 import { getTestimonials } from '@/lib/testimonials';
+import { getProducts } from '@/lib/products';
 import Link from 'next/link';
 
 interface DashboardStats {
@@ -60,14 +61,15 @@ export default function AdminDashboard() {
     const fetchStats = async () => {
       try {
         // Fetch products
-        const { data: products, error } = await supabase
-          .from('products')
-          .select('*');
+        // const { data: products, error } = await supabase
+        //   .from('products')
+        //   .select('*');
 
-        if (error) {
-          console.error('Error fetching products:', error);
-          return;
-        }
+        // if (error) {
+        //   console.error('Error fetching products:', error);
+        //   return;
+        // }
+        const products = await getProducts();
 
         // Fetch testimonials
         const testimonials = await getTestimonials();
